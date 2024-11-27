@@ -98,15 +98,23 @@ spec:
           value: 'true'
         - name: RUN_HEALTH_WEB_SERVICE
           value: 'true'
-        {{- end -}}
+        {{end -}}
         {{ if .Values.non_privilege_container.enable }}
         - name: INHERIT_RUNNING_USER_AND_GROUP
           value: 'true'
         {{ end }}
         {{- if .Values.labels.enable }}
         - name: KUBERNETES_LABELS
-          value: {{ .Values.labels.labelsJson | toJson | quote}}
+          value: {{ .Values.labels.syntax | toJson | quote}}
         {{ end }}
+        {{ if .Values.toleration.enable }}
+        - name: KUBERNETES_TOLERATIONS_JSON
+          value: {{ .Values.toleration.syntax | toJson | quote}}
+        {{ end }}
+        {{ if .Values.nodeSelector.enable }}
+        - name: KUBERNETES_NODE_SELECTOR_JSON
+          value: {{ .Values.nodeSelector.syntax | toJson | quote}}
+        {{ end -}}
         {{ if .Values.resourceLimit.enable }}
         - name: KUBERNETES_RESOURCES_LIMITS_CPU
           value: {{ .Values.resourceLimit.CPU | quote }}
