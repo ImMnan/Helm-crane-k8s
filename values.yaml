@@ -88,14 +88,21 @@ labels:
 
 #Set to specify that the crane container passes tolerations and node selector elements to child containers.
 toleration: 
-  enable: yes
+  enable: no
   syntax: [{ "effect": "NoSchedule", "key": "lifecycle", "operator": "Equal", "value": "spot" }]
 
 #Used to configure the k8s nodeSelector field to match specific node labels for the Crane engine deployment. Must be in JSON format.
 nodeSelector:
-  enable: yes
+  enable: no
   syntax:  {"label_1": "label_1_value", "label_2": "label_2_value"}
 
+#For functional test only
+# The user-defined port where to run Doduo (BlazeMeter Grid Proxy). By default, Doduo listens on port 8000.
+doduoPort: 
+# The public certificate for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format.
+tlsCertGrid:  
+#The private key for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format. 
+tlsKeyGrid: 
 
 # CPU limits for resources created by agent.
 # Memory limits for resources created by agent.

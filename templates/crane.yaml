@@ -56,7 +56,7 @@ spec:
           {{- end }}
         - name: NO_PROXY
           value: {{ .Values.proxy.no_proxy }}
-        {{- end -}}
+        {{ end -}}
         {{ if .Values.ca_bundle.enable }}
         - name: REQUEST_CA_BUNDLE
           value: {{ .Values.volume.mount_path }}/{{ .Values.ca_bundle.ca_subpath }}
@@ -64,7 +64,7 @@ spec:
           value: {{ .Values.volume.mount_path }}/{{ .Values.ca_bundle.aws_subpath }}
         - name: KUBERNETES_CA_BUNDLE_MOUNT
           value: REQUESTS_CA_BUNDLE={{ .Release.Name }}-configmap=certificate.crt:AWS_CA_BUNDLE={{ .Release.Name }}-configmap=certificate.crt
-        {{- end -}}
+        {{ end -}}
         {{ if and (.Values.istio_ingress.enable)  (eq .Values.nginx_ingress.enable false) }}
         - name: KUBERNETES_WEB_EXPOSE_TYPE
           value: ISTIO
@@ -80,7 +80,7 @@ spec:
           value: "true"
         - name: KUBERNETES_ISTIO_GATEWAY_NAME
           value: {{ .Values.istio_ingress.istio_gateway_name | quote }}
-        {{- end -}}
+        {{ end -}}
         {{ if and (.Values.nginx_ingress.enable)  (eq .Values.istio_ingress.enable false)}}
         - name: KUBERNETES_WEB_EXPOSE_TYPE
           value: INGRESS
@@ -105,15 +105,15 @@ spec:
         {{ end }}
         {{- if .Values.labels.enable }}
         - name: KUBERNETES_LABELS
-          value: {{ .Values.labels.syntax | toJson | quote}}
-        {{ end }}
+          value: {{ .Values.labels.syntax | toJson | quote }}
+        {{ end -}}
         {{ if .Values.toleration.enable }}
         - name: KUBERNETES_TOLERATIONS_JSON
-          value: {{ .Values.toleration.syntax | toJson | quote}}
-        {{ end }}
+          value: {{ .Values.toleration.syntax | toJson | quote }}
+        {{ end -}}
         {{ if .Values.nodeSelector.enable }}
         - name: KUBERNETES_NODE_SELECTOR_JSON
-          value: {{ .Values.nodeSelector.syntax | toJson | quote}}
+          value: {{ .Values.nodeSelector.syntax | toJson | quote }}
         {{ end -}}
         {{ if .Values.resourceLimit.enable }}
         - name: KUBERNETES_RESOURCES_LIMITS_CPU
