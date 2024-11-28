@@ -196,6 +196,17 @@ resourceLimit:
   MEM: "4Gi"
 ```
 
+#### [4.11] Configure deployment to support node selectors and tolerations 
+- The configuration is used to specify the tolerations & nodeselector labels. The crane container will pass these tolerations and node selector elements to child containers when they are deployed. Switch the `enable` to `yes` and add tolerations & nodeselector labels in a Json format as per the example:
+```yaml
+toleration: 
+  enable: yes
+  syntax: [{ "effect": "NoSchedule", "key": "lifecycle", "operator": "Equal", "value": "spot" }]
+
+nodeSelector:
+  enable: yes
+  syntax:  {"label_1": "label_1_value", "label_2": "label_2_value"}
+```
 
 #### [5.0] Verify if everything is setup correctly
 - Once the values are updated, please verify if the values are correctly used in the helm chart:
