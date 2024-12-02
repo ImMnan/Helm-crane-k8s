@@ -212,7 +212,8 @@ nodeSelector:
 - Once the values are updated, please verify if the values are correctly used in the helm chart:
 
 ```
-helm template .
+helm lint <path-to-chart>
+helm template <path-to-chart>
 ```
 This will print the template helm will use to install this chart. Check the values and if something is missing, please make ammends.
 
