@@ -20,6 +20,8 @@ keywords:
   - Labels
   - ResourceLimit
   - Nginx Ingress
+  - NodeSelector
+  - Tolerations
 
 type: application
 
@@ -27,7 +29,7 @@ type: application
 # - name: nginx
 #    condition: .Values.installed
 
-version: 1.2.0
+version: 1.2.1
 
 maintainers: 
   - name: Manan Patel
