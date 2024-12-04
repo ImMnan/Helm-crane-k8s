@@ -243,6 +243,7 @@ Therefore, ***always go with Node autoscalling***
 
 ## [9.0] Changelog:
 
+- 1.2.1 - Chart now supports node selectors and tolerationss see: [4.11](https://github.com/Blazemeter/helm-crane/tree/NodeSelector-%26-Toleration?tab=readme-ov-file#411-configure-deployment-to-support-node-selectors-and-tolerations)
 - 1.2.0 - Chart now supports service virtualisation deployment using nginx-ingress [4.7]
 - 1.1.0 - Chart now supports inheriting labels and resourcelimits to child pods from crane environment [4.9] [4.10]
 - 1.0.1 - The AUTH_TOKEN can now be inherited from a secret [4.8]
