@@ -98,11 +98,11 @@ nodeSelector:
 
 #For functional test only
 # The user-defined port where to run Doduo (BlazeMeter Grid Proxy). By default, Doduo listens on port 8000.
-doduoPort: 
+#doduoPort: 
 # The public certificate for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format.
-tlsCertGrid:  
+#tlsCertGrid:  
 #The private key for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format. 
-tlsKeyGrid: 
+#tlsKeyGrid: 
 
 # CPU limits for resources created by agent.
 # Memory limits for resources created by agent.
