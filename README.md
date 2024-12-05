@@ -196,12 +196,24 @@ resourceLimit:
   MEM: "4Gi"
 ```
 
+#### [4.11] Configure deployment to support node selectors and tolerations 
+- The configuration is used to specify the tolerations & nodeselector labels. The crane container will pass these tolerations and node selector elements to child containers when they are deployed. Switch the `enable` to `yes` and add tolerations & nodeselector labels in a Json format as per the example:
+```yaml
+toleration: 
+  enable: yes
+  syntax: [{ "effect": "NoSchedule", "key": "lifecycle", "operator": "Equal", "value": "spot" }]
+
+nodeSelector:
+  enable: yes
+  syntax:  {"label_1": "label_1_value", "label_2": "label_2_value"}
+```
 
 #### [5.0] Verify if everything is setup correctly
 - Once the values are updated, please verify if the values are correctly used in the helm chart:
 
 ```
-helm template .
+helm lint <path-to-chart>
+helm template <path-to-chart>
 ```
 This will print the template helm will use to install this chart. Check the values and if something is missing, please make ammends.
 
@@ -231,6 +243,7 @@ Therefore, ***always go with Node autoscalling***
 
 ## [9.0] Changelog:
 
+- 1.2.1 - Chart now supports node selectors and tolerationss see: [4.11](https://github.com/Blazemeter/helm-crane/tree/NodeSelector-%26-Toleration?tab=readme-ov-file#411-configure-deployment-to-support-node-selectors-and-tolerations)
 - 1.2.0 - Chart now supports service virtualisation deployment using nginx-ingress [4.7]
 - 1.1.0 - Chart now supports inheriting labels and resourcelimits to child pods from crane environment [4.9] [4.10]
 - 1.0.1 - The AUTH_TOKEN can now be inherited from a secret [4.8]
