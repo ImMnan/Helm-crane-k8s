@@ -243,7 +243,7 @@ Therefore, ***always go with Node autoscalling***
 
 ## [9.0] Changelog:
 
-- 1.2.1 - Chart now supports node selectors and tolerationss see: [4.11](####-[4.11]-configure-deployment-to-support-node-selectors-and-tolerations)
+- 1.2.1 - Chart now supports node selectors and tolerationss see: [4.11](####[4.11]-configure-deployment-to-support-node-selectors-and-tolerations)
 - 1.2.0 - Chart now supports service virtualisation deployment using nginx-ingress [4.7](#-[4.7]-installing-nginx-ingress-based-crane-for-mock-service-deployment)
 - 1.1.0 - Chart now supports inheriting labels and resourcelimits to child pods from crane environment [4.9](#-[4.9]-configure-deployment-to-support-child-pods-to-inherit-labels-from-the-crane) & [4.10](#-[4.10]-configure-deployment-to-support-child-pods-to-inherit-resource-limits-from-the-crane)
 - 1.0.1 - The AUTH_TOKEN can now be inherited from a secret [4.8](#-[4.8]-inheriting-the-auth_token-for-crane-from-your-k8s-secret)
