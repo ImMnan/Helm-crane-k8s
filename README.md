@@ -243,12 +243,12 @@ Therefore, ***always go with Node autoscalling***
 
 ## [9.0] Changelog:
 
-- 1.2.1 - Chart now supports node selectors and tolerationss see: [4.11](#[4.11]-configure-deployment-to-support-node-selectors-and-tolerations)
-- 1.2.0 - Chart now supports service virtualisation deployment using nginx-ingress [4.7](#[4.7]-installing-nginx-ingress-based-crane-for-mock-service-deployment)
-- 1.1.0 - Chart now supports inheriting labels and resourcelimits to child pods from crane environment [4.9](#[4.9]-configure-deployment-to-support-child-pods-to-inherit-labels-from-the-crane) & [4.10](#[4.10]-configure-deployment-to-support-child-pods-to-inherit-resource-limits-from-the-crane)
-- 1.0.1 - The AUTH_TOKEN can now be inherited from a secret [4.8](#[4.8]-inheriting-the-auth_token-for-crane-from-your-k8s-secret)
-- 1.0.0 - Now supports service virtualisation deployment using istio-ingress [4.6](#[4.6]-installing-istio-based-crane-for-mock-service-deployment-within-the-k8s-cluster) 
-- 0.1.3 - Supports configuration for non_proviledge container deployment, also added a license [4.5](#[4.6]-installing-istio-based-crane-for-mock-service-deployment-within-the-k8s-cluster)
-- 0.1.2 - Supports Proxy, CA_certs as an additional configuration of Blazemeter crane deployment [4.3](#[4.3]-adding-ca-certificates)
-- 0.1.1 - Support proxy as an additional configurable aspect of Blazemeter crane deployment [4.2](#[4.2]-adding-proxy-config-details)
+- 1.2.1 - Chart now supports node selectors and tolerationss see: [4.11](#-[4.11]-configure-deployment-to-support-node-selectors-and-tolerations)
+- 1.2.0 - Chart now supports service virtualisation deployment using nginx-ingress [4.7](#-[4.7]-installing-nginx-ingress-based-crane-for-mock-service-deployment)
+- 1.1.0 - Chart now supports inheriting labels and resourcelimits to child pods from crane environment [4.9](#-[4.9]-configure-deployment-to-support-child-pods-to-inherit-labels-from-the-crane) & [4.10](#-[4.10]-configure-deployment-to-support-child-pods-to-inherit-resource-limits-from-the-crane)
+- 1.0.1 - The AUTH_TOKEN can now be inherited from a secret [4.8](#-[4.8]-inheriting-the-auth_token-for-crane-from-your-k8s-secret)
+- 1.0.0 - Now supports service virtualisation deployment using istio-ingress [4.6](#-[4.6]-installing-istio-based-crane-for-mock-service-deployment-within-the-k8s-cluster) 
+- 0.1.3 - Supports configuration for non_proviledge container deployment, also added a license [4.5](#-[4.6]-installing-istio-based-crane-for-mock-service-deployment-within-the-k8s-cluster)
+- 0.1.2 - Supports Proxy, CA_certs as an additional configuration of Blazemeter crane deployment [4.3](#-[4.3]-adding-ca-certificates)
+- 0.1.1 - Support proxy as an additional configurable aspect of Blazemeter crane deployment [4.2](#-[4.2]-adding-proxy-config-details)
 - 0.1.0 - Supports standard - vanila Blazemeter crane deployment (no proxy or CA_Bundle configurable)
