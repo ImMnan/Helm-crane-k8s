@@ -1,7 +1,7 @@
 
 deployment:
   name: crane
-  namespace: "bm"
+  namespace: "default"
 
 # This is the name of roles and clusterroles created by the chart.
 matches:
@@ -24,9 +24,9 @@ env:
       secretKey: "auth-token"
     # if secret is not enabled, please enter the AUTH_TOKEN below directly. 
     token:  "MY_SAMPLE_TOKEN-shfowh243owijoidh243o2nosIOIJONo2414"
-  harbour_id: "MY_SAMPLE_HARBOURID-302870vdr9237"
-  ship_id: "MY_SAMPLE_SHIPID-dfwe3423535"
-  docker_regirstry: "gcr.io/verdant-bulwark-278"
+  harbour_id: "MY_SAMPLE_HARBOURID"
+  ship_id: "MY_SAMPLE_SHIPID"
+  docker_registry: "gcr.io/verdant-bulwark-278"
   auto_update: true
   image: "gcr.io/verdant-bulwark-278/blazemeter/crane:latest-master"
   pullPolicy: "Always"
