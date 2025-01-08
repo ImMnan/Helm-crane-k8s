@@ -42,9 +42,9 @@ spec:
         - name: IMAGE_OVERRIDES
           value: '{}'
         - name: DOCKER_REGISTRY
-          value: {{ .Values.env.docker_regirstry }}
+          value: {{ .Values.env.docker_registry }}
         - name: AUTO_KUBERNETES_UPDATE
-          value: {{ .Values.env.auto_update }}
+          value: {{ .Values.env.auto_update | quote }}
         {{- if .Values.proxy.enable -}}
           {{ if .Values.proxy.http_proxy }}
         - name: HTTP_PROXY
@@ -120,6 +120,14 @@ spec:
           value: {{ .Values.resourceLimit.CPU | quote }}
         - name: KUBERNETES_RESOURCES_LIMITS_MEMORY
           value: {{ .Values.resourceLimit.MEM | quote }}
+        {{ end -}}
+        {{ if .Values.gridProxy.enable }}
+        - name: DODUO_PORT
+          value: {{ .Values.gridProxy.doduoPort | quote }}
+        - name: TLS_CERT_GRID
+          value: {{ .Values.gridProxy.tlsCertGrid | quote }}
+        - name: TLS_KEY_GRID
+          value: {{ .Values.gridProxy.tlsKeyGrid | quote }}
         {{ end }}
         image: {{ .Values.env.image }}
         imagePullPolicy: {{ .Values.env.pullPolicy }}
