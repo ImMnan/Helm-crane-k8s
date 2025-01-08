@@ -6,9 +6,7 @@ keywords:
   - Blazemeter
   - Kubernetes
   - Private location
-  - Engine
   - OPL
-  - On premise engine
   - Automation Testing
   - Load Generator
   - Auto scalling
@@ -16,20 +14,20 @@ keywords:
   - Proxy-configurations
   - Istio
   - Ingress
-  - Secret
   - Labels
   - ResourceLimit
   - Nginx Ingress
   - NodeSelector
   - Tolerations
-
+  - TLS Grid
+  - Grid Proxy
 type: application
 
 #dependencies:
 # - name: nginx
 #    condition: .Values.installed
 
-version: 1.2.1
+version: 1.2.2
 
 maintainers: 
   - name: Manan Patel
