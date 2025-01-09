@@ -208,6 +208,21 @@ nodeSelector:
   syntax:  {"label_1": "label_1_value", "label_2": "label_2_value"}
 ```
 
+#### [4.12] Configure deployment to support child pods to inherit affinity from the crane
+Switch the `enable` to `yes` and add the details below to use the gridProxy functionality.
+
+- DuduoPort is the user-defined port where to run Doduo (BlazeMeter Grid Proxy). By default, Doduo listens on port 8000. 
+- `tslCertGrid` is the public certificate for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format.
+- `tlsKeyGrid` is the private key for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format.`
+
+```yaml
+gridProxy:
+  enable: no
+  doduoPort:  9070    
+  tlsCertGrid: wdfrg 
+  tlsKeyGrid: sefgwg  
+```
+
 #### [5.0] Verify if everything is setup correctly
 - Once the values are updated, please verify if the values are correctly used in the helm chart:
 
@@ -243,6 +258,7 @@ Therefore, ***always go with Node autoscalling***
 
 ## [9.0] Changelog:
 
+- 1.2.2 - Chart now supports gridProxy deployment configurations see: [4.12](#412-configure-deployment-to-support-child-pods-to-inherit-affinity-from-the-crane)
 - 1.2.1 - Chart now supports node selectors and tolerationss see: [4.11](#411-configure-deployment-to-support-node-selectors-and-tolerations)
 - 1.2.0 - Chart now supports service virtualisation deployment using nginx-ingress [4.7](#47-installing-nginx-ingress-based-crane-for-mock-service-deployment)
 - 1.1.0 - Chart now supports inheriting labels and resourcelimits to child pods from crane environment [4.9](#49-configure-deployment-to-support-child-pods-to-inherit-labels-from-the-crane) & [4.10](#410-configure-deployment-to-support-child-pods-to-inherit-resource-limits-from-the-crane)
