@@ -10,26 +10,27 @@ Deploy Blazemeter private location engine to your Kubernetes cluster using HELM 
 1. A [BlazeMeter account](https://www.blazemeter.com/)
 2. A Kubernetes cluster
 3. Latest [Helm installed](https://helm.sh/docs/helm/helm_version/)
-4. The kubernetes cluster needs to fulfill [Blazemeter Private location requirements](https://guide.blazemeter.com/hc/en-us/articles/209186065-Private-Location-System-Requirements)
+4. The kubernetes cluster needs to fulfill [Blazemeter Private location requirements](https://help.blazemeter.com/docs/guide/private-locations-system-requirements.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____1)
 
 
 ### [2.0] Generating Harbour_ID, Ship_ID and Auth_token in Blazemeter
-To start with, Blazemeter user will need Harbour_ID, Ship_ID & Auth_token from Blazemeter. 
+
+>To start with, Blazemeter user will need Harbour_ID, Ship_ID & Auth_token from Blazemeter. You can either generate these from Blazemeter GUI or through API as described below.
 
 1. Get the Harbour_ID, Ship_ID and Auth_token through BlazeMeter GUI
-    - Login to Blazemeter & create a [Private Location](https://guide.blazemeter.com/hc/en-us/articles/207421655-Creating-a-Private-Location-Creating-a-Private-Location)
-    - Copy the [Harbour_ID](https://guide.blazemeter.com/hc/en-us/articles/360000270577-Where-can-I-find-the-Harbor-ID-and-Ship-ID-) once the private location has been created in BlazeMeter.
-    - Create an [Agent](https://guide.blazemeter.com/hc/en-us/articles/360017746838)
-    - Copy the Ship_ID & Auth_token, you can copy Harbour_ID if you missed it earlier.
+    - Login to Blazemeter & create a [Private Location](https://help.blazemeter.com/docs/guide/private-locations-create.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____2)
+    - Copy the [Harbour_ID](https://help.blazemeter.com/docs/guide/private-locations-where-to-find-harbor-id-and-ship-id.html?tocpath=Private%20Locations%7CPrivate%20Locations%20Knowledge%20Base%7C_____1) once the private location has been created in BlazeMeter.
+    - Create an [Agent](https://help.blazemeter.com/docs/guide/private-locations-install-agent.html)
+    - Copy the Ship_ID & Auth_token, you can copy Harbour_ID, when you click on the add agent button. 
 
 2. Get the Harbour_ID, Ship_ID and Auth_token through BlazeMeter API
     - You should have Blazemeter API key and secret
-    - Create a Private location [using API](https://api.blazemeter.com/performance/#create-a-private-location)
+    - Create a Private location [using API](https://help.blazemeter.com/apidocs/performance/private_locations_create_a_private_location.htm?tocpath=Performance%7CPrivate%20Locations%7C_____3)
     - Copy the Harbour ID
-    - Create an Agent [using API](https://api.blazemeter.com/performance/#create-an-agent)
+    - Create an Agent [using API](https://help.blazemeter.com/apidocs/performance/private_locations_create_an_agent.htm?tocpath=Performance%7CPrivate%20Locations%7C_____4)
     - Copy the Ship_ID
-    - Generate the docker command [using API](https://api.blazemeter.com/performance/#generate-docker-command)
-    - Copy Auth_token. 
+    - Generate the docker command [using API](https://help.blazemeter.com/apidocs/performance/private_locations_docker_command.htm?tocpath=Performance%7CPrivate%20Locations%7C_____5)
+    - Copy Auth_token, harbour_id and ship_id from the docker command
 
 ---
 
@@ -41,7 +42,7 @@ To start with, Blazemeter user will need Harbour_ID, Ship_ID & Auth_token from B
 
 - Untar the chart
 ```bash
-tar -xvf blazemeter-crane-(version).tgz
+tar -xvf helm-crane(version).tgz
 ```
 
 <!To start with, I recommend adding the blazemeter-crane repo to your helm repo list
@@ -82,7 +83,7 @@ env:
 ```
 
 #### [4.2] Adding Proxy config details
-- If the [proxy](https://guide.blazemeter.com/hc/en-us/articles/115005639765-Optional-Installation-Step-Configuring-Private-Location-s-Agents-To-Use-a-Corporate-Proxy-Optional-Installation-Step:-Configuring-Private-Location's-Agents-To-Use-a-Corporate-Proxy#h_4a05699b-fb2d-4d9b-933d-11b5e3befaca) needs to be configured, change the value for `enable` to `yes`. Now, add the configuration for `http_proxy` or/and `https_proxy`. Make sure the values are set to `yes` before adding the proxy `path`, as shown below:
+- If the [proxy](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-agents-to-use-corporate-proxy.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____10#h_4a05699b-fb2d-4d9b-933d-11b5e3befaca) needs to be configured, change the value for `enable` to `yes`. Now, add the configuration for `http_proxy` or/and `https_proxy`. Make sure the values are set to `yes` before adding the proxy `path`, as shown below:
 
 ```yaml
 proxy:
@@ -94,7 +95,7 @@ proxy:
 ```
 
 #### [4.3] Adding CA certificates
-- Now, if you want to configure your Kubernetes installation to use CA certificates, make changes to this section of the values.yaml file:
+- Now, if you want to configure your Kubernetes installation to use [CA certificates](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-kubernetes-agent-to-use-ca-bundle.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____12), make changes to this section of the values.yaml file:
   -  Change the `enable` to `yes`
   -  Provide the path to certificate file respectively for both (ca_subpath & aws_subpath). The best thing is to just copy/move these cert files in the same directory as this chart and just provide the name of the certs instead of complete path.
 
@@ -111,16 +112,16 @@ volume:
 #### [4.4] Additional basic configurations
 - Please avoid switching the `serviceAccount.create`  to `yes`, as serviceAccount other than `default` will cause issues with Blazemeter crane deployments. Though I have setup code which will successfully create a new serviceAccount and assign it to all resources in this Helm chart, this is something we need to avoid for now. 
 
-- Change `auto_update: false` if you do not want the cluster to be [auto-updated](https://guide.blazemeter.com/hc/en-us/articles/360009897078-How-to-Enable-Auto-Upgrade-for-Running-Containers) (Not recommended though).
+- Change `auto_update: false` if you do not want the cluster to be [auto-updated](https://help.blazemeter.com/docs/guide/private-locations-how-to-enable-auto-upgrade-for-running-containers.html?tocpath=Private%20Locations%7CPrivate%20Locations%20Knowledge%20Base%7C_____3) (Not recommended though).
 ```yaml
   auto_update: "'true'"
 ```
 
-- Lastly, you can name the namespace for this deployment, just add the name in `namespace`, and this helm chart will be installed under that namespace.
+- Lastly, you can name the namespace for this deployment, just add the name in `namespace`, and this helm chart will be installed under that namespace. Leave it to default for no specific namespace, the chart will be installed in the `default` namespace.
 ```yaml
 deployment:
   name: crane
-  namespace: "bm"
+  namespace: "default"
 ```
 #### [4.5] Deploying Non_provoledge container - NON_ROOT deployment. 
 - If you plan to deploy the Blazemeter crane as a non_Priviledged installation, make changes to this part of the `values` file.
@@ -236,10 +237,10 @@ This will print the template helm will use to install this chart. Check the valu
 
 - Install the helm chart
 ```
-helm install crane blazemeter-crane --create-namespace --namespace=bm
+helm install crane helm-crane
 ```
-Here, crane is the name we are setting for the chart on our system and blazemeter-crane is the actual name of the chart. Make sure the namespace declared here is the same as the one we declared in the values file (see 2.3.2.6 section).
-
+Here, crane is the name we are setting for the chart on our system and helm-crane is the actual name of the chart. Make sure the namespace declared here if you plan to install the chart in a different namespace than `default` i.e. the same as the one we declared in the values file [see 4.4 section].
+You can use the namespace with `-n` flag similar to `kubectl` flag. 
 
 ### [7.0] Varify the chart installation
 
