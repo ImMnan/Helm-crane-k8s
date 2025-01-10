@@ -24,7 +24,7 @@ Deploy Blazemeter private location engine to your Kubernetes cluster using HELM 
     - Copy the Ship_ID & Auth_token, you can copy Harbour_ID, when you click on the add agent button. 
 
 2. Get the Harbour_ID, Ship_ID and Auth_token through BlazeMeter API
-    - You should have Blazemeter API key and secret
+    - You should have the Blazemeter API key and secret
     - Create a Private location [using API](https://help.blazemeter.com/apidocs/performance/private_locations_create_a_private_location.htm?tocpath=Performance%7CPrivate%20Locations%7C_____3)
     - Copy the Harbour ID
     - Create an Agent [using API](https://help.blazemeter.com/apidocs/performance/private_locations_create_an_agent.htm?tocpath=Performance%7CPrivate%20Locations%7C_____4)
@@ -36,7 +36,7 @@ Deploy Blazemeter private location engine to your Kubernetes cluster using HELM 
 
 ### [3.0] Downloading the chart
 
-- Pull/Download the chart - tar file from the github repository 
+- Pull/Download the chart - tar file from the GitHub repository 
 
   [Download the latest Chart](https://github.com/Blazemeter/helm-crane/releases/download/1.2.2/helm-crane-1.2.2.tgz)
 
@@ -67,7 +67,7 @@ tar -xvf helm-crane(version).tgz
 ---
 ### [4.0] Configuring the Chart values before installing
 
-- Open `values` file to make ammendments as per requirements 
+- Open the `values` file to make amendments as per requirements 
 ``` 
 vi values.yaml
 ```
@@ -97,7 +97,7 @@ proxy:
 #### [4.3] Adding CA certificates
 - Now, if you want to configure your Kubernetes installation to use [CA certificates](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-kubernetes-agent-to-use-ca-bundle.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____12), make changes to this section of the values.yaml file:
   -  Change the `enable` to `yes`
-  -  Provide the path to certificate file respectively for both (ca_subpath & aws_subpath). The best thing is to just copy/move these cert files in the same directory as this chart and just provide the name of the certs instead of complete path.
+  -  Provide the path to the certificate file respectively for both (ca_subpath & aws_subpath). The best thing is to just copy/move these cert files in the same directory as this chart and just provide the name of the certs instead of the complete path.
 
 ```yaml
 ca_bundle:
@@ -110,7 +110,7 @@ volume:
 ```
 
 #### [4.4] Additional basic configurations
-- Please avoid switching the `serviceAccount.create`  to `yes`, as serviceAccount other than `default` will cause issues with Blazemeter crane deployments. Though I have setup code which will successfully create a new serviceAccount and assign it to all resources in this Helm chart, this is something we need to avoid for now. 
+- Please avoid switching the `serviceAccount.create`  to `yes`, as serviceAccount other than `default` will cause issues with Blazemeter crane deployments. Though I have set up a code that will successfully create a new serviceAccount and assign it to all resources in this Helm chart, this is something we need to avoid for now. 
 
 - Change `auto_update: false` if you do not want the cluster to be [auto-updated](https://help.blazemeter.com/docs/guide/private-locations-how-to-enable-auto-upgrade-for-running-containers.html?tocpath=Private%20Locations%7CPrivate%20Locations%20Knowledge%20Base%7C_____3) (Not recommended though).
 ```yaml
@@ -145,7 +145,7 @@ istio_ingress:
 ```
 Change the `enable` to `yes` and this will automatically setup istio-ingress for this installation. Which will allow outside traffic to access the mock-service pod. However, make sure istio is already installed and configured as per the [Blazemeter guide](https://help.blazemeter.com/docs/guide/private-locations-install-blazemeter-agent-for-kubernetes-for-mock-services.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____6) 
 
-#### [4.7] Installing Nginx Ingress based crane for mock service deployment 
+#### [4.7] Installing Nginx Ingress-based crane for mock service deployment 
 - If this OPL/Private location is going to run mock services using nginx-ingress, make changes to this part of the `values` file.
 ```yaml
 nginx_ingress:
@@ -153,10 +153,10 @@ nginx_ingress:
   credentialName: "wildcard-credential"
   web_expose_subdomain: "mydomain.local" 
 ```
-Change the `enable` to `yes` and this will automatically setup nginx-ingress for this installation. Which will allow outside traffic to access the mock-service pod. However, make sure nginx is already installed and configured. [Blazemeter guide](https://help.blazemeter.com/docs/guide/private-locations-install-blazemeter-agent-for-kubernetes-for-mock-services.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____6)
+Change the `enable` to `yes` and this will automatically set up nginx-ingress for this installation, which will allow outside traffic to access the mock-service pod. However, make sure nginx is already installed and configured. [Blazemeter guide](https://help.blazemeter.com/docs/guide/private-locations-install-blazemeter-agent-for-kubernetes-for-mock-services.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____6)
 
 #### [4.8] Inheriting the AUTH_TOKEN for crane from your k8s secret
-- If user/admins require the AUTH_TOKEN for any crane installation to be secret/secure, the ENV values for AUTH_TOKEN can be inherited from the k8s secret. User needs to make changes to this part of the `values` file.
+- If user/admins require the AUTH_TOKEN for any crane installation to be secret/secure, the ENV values for AUTH_TOKEN can be inherited from the k8s secret. The user needs to make changes to this part of the `values` file.
 ```yaml
 env:
   authToken: 
@@ -168,7 +168,7 @@ env:
     # if secret is not enabled, please enter the AUTH_TOKEN below directly. 
     token:  "MY_SAMPLE_TOKEN-shfowh243owijoidh243o2nosIOIJONo2414"
 ```
-Change the `enable` to `yes` and this will automatically inherit the AUTH_TOKEN values from the secret user provide in the following values. Make sure the cluster/namespace has the secret applied in the following format:
+Change the `enable` to `yes` and this will automatically inherit the AUTH_TOKEN values from the secret user provided in the following values. Make sure the cluster/namespace has the secret applied in the following format:
 ```YAML
 apiVersion: v1
 kind: Secret
@@ -181,7 +181,7 @@ data:
 ```
 
 #### [4.9] Configure deployment to support child pods to inherit labels from the crane
-- If user/admins require certain set of labels as part of the deployment of a cluster resource, we can use this `labels` values. These labels will be Inherited from the crane when the child pods are deployed. Because, note that labels added to crane deployment will not be automatically inherited by the child pods. Switch the `enable` to `yes` and add labels in a Json format as per the example:
+- If users/admins require a certain set of labels as part of the deployment of a cluster resource, we can use these `labels` values. These labels will be Inherited from the crane when the child pods are deployed. Because, note that labels added to crane deployment will not be automatically inherited by the child pods. Switch the `enable` to `yes` and add labels in a JSON format as per the example:
 ```yaml
 labels:
   enable: yes 
@@ -189,7 +189,7 @@ labels:
 ```
 
 #### [4.10] Configure deployment to support child pods to inherit resource limits from the crane
-- If user/admins require a CPU, MEM limit to be applied to all cluster resources, we can use this `resourceLimit` values. These resource limits will be Inherited from the crane ENV when the child pods are deployed. Because, note that resource limit added to crane deployment will not be automatically inherited by the child pods. Switch the `enable` to `yes` and add resource limits in a string format as per the example:
+- If user/admins require a CPU, or MEM limit to be applied to all cluster resources, we can use this `resourceLimit` value. These resource limits will be Inherited from the crane ENV when the child pods are deployed. Because, note that resource limit added to crane deployment will not be automatically inherited by the child pods. Switch the `enable` to `yes` and add resource limits in a string format as per the example:
 ```yaml
 resourceLimit:
   enable: yes
@@ -231,7 +231,7 @@ gridProxy:
 helm lint <path-to-chart>
 helm template <path-to-chart>
 ```
-This will print the template helm will use to install this chart. Check the values and if something is missing, please make ammends.
+This will print the template Helm will use to install this chart. Check the values and if something is missing, please make ammends.
 
 ### [6.0] Installing the chart
 
@@ -239,7 +239,7 @@ This will print the template helm will use to install this chart. Check the valu
 ```
 helm install crane helm-crane
 ```
-Here, crane is the name we are setting for the chart on our system and helm-crane is the actual name of the chart. Make sure the namespace declared here if you plan to install the chart in a different namespace than `default` i.e. the same as the one we declared in the values file [see 4.4 section].
+Here, crane is the name we are setting for the chart on our system and helm-crane is the actual name of the chart. Make sure the namespace is declared here if you plan to install the chart in a different namespace than `default` i.e. the same as the one we declared in the values file [see 4.4 section].
 You can use the namespace with `-n` flag similar to `kubectl` flag. 
 
 ### [7.0] Varify the chart installation
@@ -253,14 +253,14 @@ helm list -A
 
 It is recommended to install this Helm chart onto the auto-scalable cluster for example - [EKS](https://aws.amazon.com/eks/), [GKE](https://cloud.google.com/kubernetes-engine) or [AKS](https://azure.microsoft.com/en-in/products/kubernetes-service/#:~:text=Azure%20Kubernetes%20Service%20(AKS)%20offers,edge%2C%20and%20multicloud%20Kubernetes%20clusters.). 
 
-However, make sure you are scalling the nodes, as it is not recommended to go with EKS Fargate or GKE Autopilot, those types of autoscalling is not supported for Blazemeter crane deployments. 
+However, make sure you are scaling the nodes, as it is not recommended to go with EKS Fargate or GKE Autopilot, those types of autoscaling are not supported for Blazemeter crane deployments. 
 
-Therefore, ***always go with Node autoscalling***
+Therefore, ***always go with Node autoscaling***
 
 ## [9.0] Changelog:
 
 - 1.2.2 - Chart now supports gridProxy deployment configurations see: [4.12](#412-configure-deployment-to-support-child-pods-to-inherit-affinity-from-the-crane)
-- 1.2.1 - Chart now supports node selectors and tolerationss see: [4.11](#411-configure-deployment-to-support-node-selectors-and-tolerations)
+- 1.2.1 - Chart now supports node selectors and tolerations see: [4.11](#411-configure-deployment-to-support-node-selectors-and-tolerations)
 - 1.2.0 - Chart now supports service virtualisation deployment using nginx-ingress [4.7](#47-installing-nginx-ingress-based-crane-for-mock-service-deployment)
 - 1.1.0 - Chart now supports inheriting labels and resourcelimits to child pods from crane environment [4.9](#49-configure-deployment-to-support-child-pods-to-inherit-labels-from-the-crane) & [4.10](#410-configure-deployment-to-support-child-pods-to-inherit-resource-limits-from-the-crane)
 - 1.0.1 - The AUTH_TOKEN can now be inherited from a secret [4.8](#48-inheriting-the-auth_token-for-crane-from-your-k8s-secret)
@@ -268,4 +268,4 @@ Therefore, ***always go with Node autoscalling***
 - 0.1.3 - Supports configuration for non_proviledge container deployment, also added a license [4.5](#46-installing-istio-based-crane-for-mock-service-deployment-within-the-k8s-cluster)
 - 0.1.2 - Supports Proxy, CA_certs as an additional configuration of Blazemeter crane deployment [4.3](#43-adding-ca-certificates)
 - 0.1.1 - Support proxy as an additional configurable aspect of Blazemeter crane deployment [4.2](#42-adding-proxy-config-details)
-- 0.1.0 - Supports standard - vanila Blazemeter crane deployment (no proxy or CA_Bundle configurable)
+- 0.1.0 - Supports standard - vanilla Blazemeter crane deployment (no proxy or CA_Bundle configurable)
