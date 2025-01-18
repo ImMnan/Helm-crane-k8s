@@ -105,7 +105,12 @@ gridProxy:
 
 # CPU limits for resources created by agent.
 # Memory limits for resources created by agent.
-resourceLimit:
-  enable: no
-  CPU: "800m"
-  MEM: "4Gi"
+resources: 
+  limits:
+    enable: yes
+    CPU: 2
+    MEM: 8Gi
+  requests:           # The request resources are enabled by default for efficient agent functions. 
+    enable: yes 
+    CPU: 1000m
+    MEM: 4096  
