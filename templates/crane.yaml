@@ -115,11 +115,17 @@ spec:
         - name: KUBERNETES_NODE_SELECTOR_JSON
           value: {{ .Values.nodeSelector.syntax | toJson | quote }}
         {{ end -}}
-        {{ if .Values.resourceLimit.enable }}
+        {{ if .Values.resources.requests.enable }}
+        - name: KUBERNETES_RESOURCES_DEFAULT_CPU
+          value: {{ .Values.resources.requests.CPU | quote }}
+        - name: KUBERNETES_RESOURCES_DEFAULT_MEM
+          value: {{ .Values.resources.requests.MEM | quote }}
+        {{ end -}}
+        {{ if .Values.resources.limits.enable }}
         - name: KUBERNETES_RESOURCES_LIMITS_CPU
-          value: {{ .Values.resourceLimit.CPU | quote }}
+          value: {{ .Values.resources.limits.CPU | quote }}
         - name: KUBERNETES_RESOURCES_LIMITS_MEMORY
-          value: {{ .Values.resourceLimit.MEM | quote }}
+          value: {{ .Values.resources.limits.MEM | quote }}
         {{ end -}}
         {{ if .Values.gridProxy.enable }}
         - name: DODUO_PORT
