@@ -127,6 +127,12 @@ spec:
         - name: KUBERNETES_RESOURCES_LIMITS_MEMORY
           value: {{ .Values.resources.limits.MEM | quote }}
         {{ end -}}
+        {{ if .Values.ephemeralStorage.enable }}
+        - name: KUBERNETES_LIMITS_EPHEMERAL_STORAGE
+          value: {{ .Values.ephemeralStorage.limits | quote }}
+        - name: KUBERNETES_REQUESTS_EPHEMERAL_STORAGE
+          value: {{ .Values.ephemeralStorage.requests | quote }}
+        {{ end -}}
         {{ if .Values.gridProxy.enable }}
         - name: DODUO_PORT
           value: {{ .Values.gridProxy.doduoPort | quote }}

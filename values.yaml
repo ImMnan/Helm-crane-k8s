@@ -103,14 +103,20 @@ gridProxy:
   tlsCertGrid: wdfrg  # The public certificate for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format.
   tlsKeyGrid: sefgwg  # The private key for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format. 
 
-# CPU limits for resources created by agent.
-# Memory limits for resources created by agent.
+# CPU limits & requests for resources created by agent.
+# Memory limits & requests for resources created by agent.
 resources: 
   limits:
-    enable: yes
+    enable: no
     CPU: 2
     MEM: 8Gi
   requests:           # The request resources are enabled by default for efficient agent functions. 
     enable: yes 
     CPU: 1000m
-    MEM: 4096  
+    MEM: 4096         # This value should be an integer unlike other values that supports k8s standard for declaring resource limits/requests.
+    
+# Integer value in megabytes. Set to control the ephemeral storage requests & limit of the Taurus pod (optional). 
+ephemeralStorage:
+  enable: yes
+  limits: 500         # The values are in Mi
+  requests: 100       # Default: 100 (Mi). 
