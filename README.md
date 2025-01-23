@@ -188,16 +188,29 @@ labels:
   labelsJson: {"label_1": "label_1_value", "label_2": "label2value"}
 ```
 
-#### [4.10] Configure deployment to support child pods to inherit resource limits from the crane
-- If user/admins require a CPU, or MEM limit to be applied to all cluster resources, we can use this `resourceLimit` value. These resource limits will be Inherited from the crane ENV when the child pods are deployed. Because, note that resource limit added to crane deployment will not be automatically inherited by the child pods. Switch the `enable` to `yes` and add resource limits in a string format as per the example:
+#### [4.10] Configure deployment to implement child pods to inherit resource limits from the crane
+- If user/admins require a CPU, or MEM limit or requests to be applied to all cluster resources, we can use this `resources` value. These resource limits/requests will be Inherited from the crane ENV when the child pods are deployed. Note that resource limits/requests added to crane deployment will not be automatically inherited by the child pods. You can either use one of them or both. Switch the `enable` to `yes` and add resource limits/requests in a string format as per the example:
 ```yaml
-resourceLimit:
-  enable: yes
-  CPU: "800m"
-  MEM: "4Gi"
+resources: 
+  limits:
+    enable: no
+    CPU: 2
+    MEM: 8Gi
+  requests:           # The request resources are enabled by default for efficient agent functions. 
+    enable: yes 
+    CPU: 1000m
+    MEM: 4096 
+```
+#### [4.11] Configure deployment to implement ephemeral storage request/limit for the child pods
+- If the admin require to setup an ephemeral storage request/limit for the child pods, we can use this `ephemeralStorage` value. The values are in Mi. Switch the `enable` to `yes` and add the values in a string format as per the example:
+```yaml
+ephemeralStorage:
+  enable: no
+  limits: 1024         # The values are in Mi
+  requests: 100       # Default: 100 (Mi). 
 ```
 
-#### [4.11] Configure deployment to support node selectors and tolerations 
+#### [4.12] Configure deployment to support node selectors and tolerations 
 - The configuration is used to specify the tolerations & nodeselector labels. The crane container will pass these tolerations and node selector elements to child containers when they are deployed. Switch the `enable` to `yes` and add tolerations & nodeselector labels in a Json format as per the example:
 ```yaml
 toleration: 
@@ -209,7 +222,7 @@ nodeSelector:
   syntax:  {"label_1": "label_1_value", "label_2": "label_2_value"}
 ```
 
-#### [4.12] Configure deployment to support child pods to inherit affinity from the crane
+#### [4.13] Configure deployment to support gridProxy functionality
 Switch the `enable` to `yes` and add the details below to use the gridProxy functionality.
 
 - DuduoPort is the user-defined port where to run Doduo (BlazeMeter Grid Proxy). By default, Doduo listens on port 8000. 
@@ -259,8 +272,9 @@ Therefore, ***always go with Node autoscaling***
 
 ## [9.0] Changelog:
 
-- 1.2.2 - Chart now supports gridProxy deployment configurations see: [4.12](#412-configure-deployment-to-support-child-pods-to-inherit-affinity-from-the-crane)
-- 1.2.1 - Chart now supports node selectors and tolerations see: [4.11](#411-configure-deployment-to-support-node-selectors-and-tolerations)
+- 1.2.3 - Chart can work with resource requests & limits, similarly the ephemeral storage requests & limits can be configured.[4.10](#410-configure-deployment-to-implement-child-pods-to-inherit-resource-limits-from-the-crane) [4.11](#411-configure-deployment-to-implement-ephemeral-storage-requestlimit-for-the-child-pods)
+- 1.2.2 - Chart now supports gridProxy deployment configurations see: [4.13](#413-configure-deployment-to-support-gridproxy-functionality)
+- 1.2.1 - Chart now supports node selectors and tolerations see: [4.12](#412-configure-deployment-to-support-node-selectors-and-tolerations)
 - 1.2.0 - Chart now supports service virtualisation deployment using nginx-ingress [4.7](#47-installing-nginx-ingress-based-crane-for-mock-service-deployment)
 - 1.1.0 - Chart now supports inheriting labels and resourcelimits to child pods from crane environment [4.9](#49-configure-deployment-to-support-child-pods-to-inherit-labels-from-the-crane) & [4.10](#410-configure-deployment-to-support-child-pods-to-inherit-resource-limits-from-the-crane)
 - 1.0.1 - The AUTH_TOKEN can now be inherited from a secret [4.8](#48-inheriting-the-auth_token-for-crane-from-your-k8s-secret)
