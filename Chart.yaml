@@ -21,13 +21,15 @@ keywords:
   - Tolerations
   - TLS Grid
   - Grid Proxy
+  - Ephemeral Storage
+  
 type: application
 
 #dependencies:
 # - name: nginx
 #    condition: .Values.installed
 
-version: 1.2.2
+version: 1.2.3
 
 maintainers: 
   - name: Manan Patel
