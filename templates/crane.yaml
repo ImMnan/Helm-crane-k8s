@@ -58,7 +58,7 @@ spec:
           value: {{ .Values.proxy.no_proxy }}
         {{ end -}}
         {{ if .Values.ca_bundle.enable }}
-        - name: REQUEST_CA_BUNDLE
+        - name: REQUESTS_CA_BUNDLE
           value: {{ .Values.volume.mount_path }}/{{ .Values.ca_bundle.ca_subpath }}
         - name: AWS_CA_BUNDLE
           value: {{ .Values.volume.mount_path }}/{{ .Values.ca_bundle.aws_subpath }}
