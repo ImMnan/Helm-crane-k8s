@@ -26,11 +26,22 @@ env:
     token:  "MY_SAMPLE_TOKEN-shfowh243owijoidh243o2nosIOIJONo2414"
   harbour_id: "MY_SAMPLE_HARBOURID"
   ship_id: "MY_SAMPLE_SHIPID"
-  docker_registry: "gcr.io/verdant-bulwark-278"
+  #Please use imageOverride if the use case is to use a custom image registry for the private location. 
+  docker_registry: "gcr.io/verdant-bulwark-278"  #default registry for Blazemeter crane (DO NOT CHANGE)
   auto_update: true
-  image: "gcr.io/verdant-bulwark-278/blazemeter/crane:latest-master"
+  image: "gcr.io/verdant-bulwark-278/blazemeter/crane:latest-master"  #default image for Blazemeter crane (DO NOT CHANGE)
   pullPolicy: "Always"
 
+# Allows the override of the default image received from BZA for the container to run. Set the key to the original value (Example: apm-image:latest). Set the value to the new repository name with a tag. Extract the appropriate version number from 'admin/ship-stats'.
+imageOverride:
+  enable: no
+  #If imageOverride is enabled, also make sure to change/modify the docker_registry as well as image path below.
+  docker_registry: "gcr.io/verdant-bulwark-278"
+  image: "gcr.io/verdant-bulwark-278/blazemeter/crane:latest-master"
+  auto_update: true
+  # Example: {"blazemeter/crane:latest":"gcr.io/verdant-bulwark-278/blazemeter/crane:3.6.47"}
+  images: {"taurus-cloud:latest": "pathToYourRepo/<image_name:version_number>", "torero:latest": "pathToYourRepo/<image_name:version_number>", "blazemeter/service-mock:latest": "pathToYourRepo/<image_name:version_number>", "blazemeter/mock-pc-service:latest": "pathToYourRepo/<image_name:version_number>", "blazemeter/sv-bridge:latest": "pathToYourRepo/<image_name:version_number>", "blazemeter/doduo:latest": "pathToYourRepo/<image_name:version_number>"}
+  pullPolicy: "Always"
   # Proxy configurations here, change enable to yes, followed by http/https configuration
 proxy:
   enable: no
@@ -54,7 +65,8 @@ volume:
   mount_path: "/var/cm"
 
 # If you plan to enable non-privileged containers, please enable the below configuration, change enable:yes
-# This will run all pods/containers (related to private location installation) within the cluster as non_root.
+# This will run all pods/containers (related to private location installation) within the cluster as non_root. 
+# Non-root deployment requires qualifying plan and an additional feature to be enabled, please contact support for enabling this feature if your account has a qualifying plan. 
 non_privilege_container:
   enable: no
   runAsGroup: 1337
@@ -119,4 +131,4 @@ resources:
 ephemeralStorage:
   enable: no
   limits: 1024         # The values are in Mi
-  requests: 100       # Default: 100 (Mi). 
+  requests: 100        # Default: 100 (Mi). 
