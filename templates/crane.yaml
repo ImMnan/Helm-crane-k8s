@@ -23,28 +23,37 @@ spec:
       automountServiceAccountToken: true
       containers:
       - env:
-      {{ if .Values.env.authToken.secret.enable }}
+        {{ if .Values.env.authToken.secret.enable }}
         - name: AUTH_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{.Values.env.authToken.secret.secretName }}
               key: {{ .Values.env.authToken.secret.secretKey }}
-      {{ else }}
+        {{ else }}
         - name: AUTH_TOKEN
           value: {{ .Values.env.authToken.token }}
-      {{ end }}
+        {{ end }}
         - name: HARBOR_ID
           value: {{ .Values.env.harbour_id }}
         - name: SHIP_ID
           value: {{ .Values.env.ship_id }}
         - name: CONTAINER_MANAGER_TYPE
           value: KUBERNETES
+        {{ if .Values.imageOverride.enable }}
+        - name: IMAGE_OVERRIDES
+          value: {{ .Values.imageOverride.images | toJson | quote }}
+        - name: DOCKER_REGISTRY
+          value: {{ .Values.imageOverride.docker_registry | quote }}
+        - name: AUTO_KUBERNETES_UPDATE
+          value: {{ .Values.imageOverride.auto_update | quote }}
+        {{ else }}    
         - name: IMAGE_OVERRIDES
           value: '{}'
         - name: DOCKER_REGISTRY
           value: {{ .Values.env.docker_registry }}
         - name: AUTO_KUBERNETES_UPDATE
           value: {{ .Values.env.auto_update | quote }}
+        {{ end }}          
         {{- if .Values.proxy.enable -}}
           {{ if .Values.proxy.http_proxy }}
         - name: HTTP_PROXY
@@ -140,9 +149,14 @@ spec:
           value: {{ .Values.gridProxy.tlsCertGrid | quote }}
         - name: TLS_KEY_GRID
           value: {{ .Values.gridProxy.tlsKeyGrid | quote }}
-        {{ end }}
+        {{ end -}}
+        {{ if .Values.imageOverride.enable }} 
+        image: {{ .Values.imageOverride.image }}
+        imagePullPolicy: {{ .Values.imageOverride.pullPolicy }}
+        {{ else }}
         image: {{ .Values.env.image }}
         imagePullPolicy: {{ .Values.env.pullPolicy }}
+        {{ end -}}
         name: crane-container
         {{ if .Values.ca_bundle.enable }}
         volumeMounts:
@@ -159,7 +173,7 @@ spec:
           capabilities:
             drop:
             - ALL
-          runAsGroup: {{ .Values.non_privilege_container.runAsGroup }}   
+          runAsGroup: {{ .Values.non_privilege_container.runAsGroup }} 
           runAsUser: {{ .Values.non_privilege_container.runAsUser }}        
       {{ end }}
       restartPolicy: {{ .Values.restartPolicy }}
