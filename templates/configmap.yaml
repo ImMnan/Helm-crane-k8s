@@ -1,10 +1,12 @@
-{{ if .Values.ca_bundle.use }}
+{{ if .Values.ca_bundle.enable }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-configmap
   namespace: {{ .Release.Namespace }}
 data:
-  certificate.crt: |-
-{{ .Files.Get "certificate.crt" | indent 4 }}
-{{ end }}
+  {{ .Values.ca_bundle.request_ca_bundle }}: |-
+{{ .Files.Get .Values.ca_bundle.request_ca_bundle | indent 4 }}
+  {{ .Values.ca_bundle.aws_ca_bundle }}: |-
+{{ .Files.Get .Values.ca_bundle.aws_ca_bundle | indent 4 }}
+{{ end -}}
