@@ -46,6 +46,8 @@ spec:
           value: {{ .Values.imageOverride.docker_registry | quote }}
         - name: AUTO_KUBERNETES_UPDATE
           value: {{ .Values.imageOverride.auto_update | quote }}
+        - name: AUTO_UPDATE_CONTAINERS_WHILE_RUNNING
+          value: {{ .Values.imageOverride.auto_update_containers_while_running | quote }}
         {{ else }}    
         - name: IMAGE_OVERRIDES
           value: '{}'
@@ -53,6 +55,8 @@ spec:
           value: {{ .Values.image.docker_registry | quote }}
         - name: AUTO_KUBERNETES_UPDATE
           value: {{ .Values.image.auto_update | quote }}
+        - name: AUTO_UPDATE_CONTAINERS_WHILE_RUNNING
+          value: {{ .Values.image.auto_update_containers_while_running | quote }}
         {{ end -}}          
         {{ if .Values.proxy.enable -}}
           {{ if .Values.proxy.http_proxy }}
