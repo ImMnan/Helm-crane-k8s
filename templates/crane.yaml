@@ -32,7 +32,7 @@ spec:
         {{ else }}
         - name: AUTH_TOKEN
           value: {{ .Values.env.authToken.token }}
-        {{ end }}
+        {{ end -}}
         - name: HARBOR_ID
           value: {{ .Values.env.harbour_id }}
         - name: SHIP_ID
@@ -53,8 +53,8 @@ spec:
           value: {{ .Values.image.docker_registry | quote }}
         - name: AUTO_KUBERNETES_UPDATE
           value: {{ .Values.image.auto_update | quote }}
-        {{ end }}          
-        {{- if .Values.proxy.enable -}}
+        {{ end -}}          
+        {{ if .Values.proxy.enable -}}
           {{ if .Values.proxy.http_proxy }}
         - name: HTTP_PROXY
           value: {{ .Values.proxy.http_path }}
@@ -158,20 +158,20 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{ end -}}
         name: crane-container
-        {{- if or (.Values.craneResources.requests.enable) (.Values.craneResources.limits.enable) }} 
+        {{ if or (.Values.craneResources.requests.enable) (.Values.craneResources.limits.enable) }} 
         resources:
-          {{- if .Values.craneResources.requests.enable }} 
+          {{ if .Values.craneResources.requests.enable }} 
           requests:
             memory: {{ .Values.craneResources.requests.MEM }}
             cpu: {{ .Values.craneResources.requests.CPU }}
-          {{- end -}}
-          {{- if .Values.craneResources.limits.enable }}
+          {{ end -}}
+          {{ if .Values.craneResources.limits.enable }}
           limits:
             memory: {{ .Values.craneResources.limits.MEM }}
             cpu: {{ .Values.craneResources.limits.CPU }}         
           {{ end -}}
-        {{- end -}}
-        {{- if .Values.non_privilege_container.enable }}  
+        {{ end -}}
+        {{ if .Values.non_privilege_container.enable }}  
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -180,7 +180,7 @@ spec:
           runAsGroup: {{ .Values.non_privilege_container.runAsGroup }} 
           runAsUser: {{ .Values.non_privilege_container.runAsUser }}        
       {{ end -}}
-        {{- if .Values.ca_bundle.enable }}
+        {{ if .Values.ca_bundle.enable }}
         volumeMounts:
         - name: {{ .Values.volume.volume_name }}
           mountPath: {{ .Values.volume.mount_path }}

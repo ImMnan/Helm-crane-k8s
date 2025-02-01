@@ -7,7 +7,7 @@ deploymentRbac:
     # Specifies whether a ServiceAccount should be created, currently BM OPLs in Kubernetes only supports default service account.
     create: false
     # The name of the ServiceAccount to enable, keep empty to enable default account.
-    name: blazemeteragent
+    name:
 
 env:
   authToken: 
@@ -116,7 +116,7 @@ gridProxy:
   tlsCertGrid: wdfrg  # The public certificate for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format.
   tlsKeyGrid: sefgwg  # The private key for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format. 
 
-
+# CPU & Memory limits & requests for resources for crane deployment. 
 craneResources: 
   requests:           # The request resources are enabled by default for efficient agent functions. 
     enable: yes
@@ -127,8 +127,7 @@ craneResources:
     CPU: 1
     MEM: 2Gi
 
-# CPU limits & requests for resources created by agent.
-# Memory limits & requests for resources created by agent.
+# CPU & Memory limits & requests for resources created by agent.
 executorResources: 
   requests:           # The request resources are enabled by default for efficient agent functions. 
     enable: yes 
