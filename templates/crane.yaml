@@ -72,11 +72,11 @@ spec:
         {{ end -}}
         {{ if .Values.ca_bundle.enable }}
         - name: REQUESTS_CA_BUNDLE
-          value: {{ .Values.volume.mount_path }}/{{ .Values.ca_bundle.ca_subpath }}
+          value: {{ .Values.volume.mount_path }}/{{ .Values.ca_bundle.request_ca_bundle }}
         - name: AWS_CA_BUNDLE
-          value: {{ .Values.volume.mount_path }}/{{ .Values.ca_bundle.aws_subpath }}
+          value: {{ .Values.volume.mount_path }}/{{ .Values.ca_bundle.aws_ca_bundle }}
         - name: KUBERNETES_CA_BUNDLE_MOUNT
-          value: REQUESTS_CA_BUNDLE={{ .Release.Name }}-configmap=certificate.crt:AWS_CA_BUNDLE={{ .Release.Name }}-configmap=certificate.crt
+          value: REQUESTS_CA_BUNDLE={{ .Release.Name }}-configmap={{ .Values.ca_bundle.request_ca_bundle }}:AWS_CA_BUNDLE={{ .Release.Name }}-configmap={{ .Values.ca_bundle.aws_ca_bundle }}
         {{ end -}}
         {{ if and (.Values.istio_ingress.enable)  (eq .Values.nginx_ingress.enable false) }}
         - name: KUBERNETES_WEB_EXPOSE_TYPE
