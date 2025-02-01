@@ -9,15 +9,14 @@ deploymentRbac:
     # The name of the ServiceAccount to enable, keep empty to enable default account.
     name:
 
-env:
-  authToken: 
-    # if you want to pass the AUTH_TOKEN through secret in the crane ENV variables set secret to yes and add secret name and key
-    secret:
-      enable: no
-      secretName: "your-secretName"
-      secretKey: "auth-token"
-    # if secret is not enabled, please enter the AUTH_TOKEN below directly. 
-    token:  "MY_SAMPLE_TOKEN-shfowh243owijoidh243o2nosIOIJONo2414"
+env: 
+    # if you plan to pass the AUTH_TOKEN through secret in the crane ENV variables set secret to yes and add secret name and key
+  secret:
+    enable: no
+    secretName: "your-secretName"
+    secretKey: "auth-token"
+  # if secret is not enabled, please enter the AUTH_TOKEN below directly. 
+  token:  "MY_SAMPLE_TOKEN-shfowh243owijoidh243o2nosIOIJONo2414"
   harbour_id: "MY_SAMPLE_HARBOURID"
   ship_id: "MY_SAMPLE_SHIPID"
   #Please use imageOverride if the use case is to utilise a custom image registry for the private location. 
@@ -63,6 +62,7 @@ ca_bundle:
 volume:
   volume_name: "volume-cm"
   mount_path: "/var/cm"
+  readOnly: true
 
 # If you plan to enable non-privileged containers, please enable the below configuration, change enable:yes
 # This will run all pods/containers (related to private location installation) within the cluster as non_root. 

@@ -23,15 +23,15 @@ spec:
       automountServiceAccountToken: true
       containers:
       - env:
-        {{ if .Values.env.authToken.secret.enable }}
+        {{ if .Values.env.secret.enable }}
         - name: AUTH_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{.Values.env.authToken.secret.secretName }}
-              key: {{ .Values.env.authToken.secret.secretKey }}
+              name: {{.Values.env.secret.secretName }}
+              key: {{ .Values.env.secret.secretKey }}
         {{ else }}
         - name: AUTH_TOKEN
-          value: {{ .Values.env.authToken.token }}
+          value: {{ .Values.env.token }}
         {{ end -}}
         - name: HARBOR_ID
           value: {{ .Values.env.harbour_id }}
@@ -160,7 +160,7 @@ spec:
         name: crane-container
         {{ if or (.Values.craneResources.requests.enable) (.Values.craneResources.limits.enable) }} 
         resources:
-          {{ if .Values.craneResources.requests.enable }} 
+          {{- if .Values.craneResources.requests.enable }} 
           requests:
             memory: {{ .Values.craneResources.requests.MEM }}
             cpu: {{ .Values.craneResources.requests.CPU }}
@@ -184,6 +184,7 @@ spec:
         volumeMounts:
         - name: {{ .Values.volume.volume_name }}
           mountPath: {{ .Values.volume.mount_path }}
+          readOnly: {{ .Values.volume.readOnly }}
       volumes:
       - name: {{ .Values.volume.volume_name }}
         configMap:
