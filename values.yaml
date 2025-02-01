@@ -58,9 +58,9 @@ proxy:
 
 # Configure CA Bundle here - Change enable: yes
 ca_bundle:
-  enable: no
-  ca_subpath: "certificate.crt"
-  aws_subpath: "certificate.crt"
+  enable: yes
+  request_ca_bundle: "certificate.crt"
+  aws_ca_bundle: "certificate2.crt"
 volume:
   volume_name: "volume-cm"
   mount_path: "/var/cm"
@@ -122,7 +122,7 @@ gridProxy:
 craneResources: 
   requests:           # The request resources are enabled by default for efficient agent functions. 
     enable: yes
-    CPU: 512m
+    CPU: 256m
     MEM: 1024Mi 
   limits:
     enable: no
