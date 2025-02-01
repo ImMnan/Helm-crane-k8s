@@ -124,17 +124,17 @@ spec:
         - name: KUBERNETES_NODE_SELECTOR_JSON
           value: {{ .Values.nodeSelector.syntax | toJson | quote }}
         {{ end -}}
-        {{ if .Values.resources.requests.enable }}
+        {{ if .Values.executorResources.requests.enable }}
         - name: KUBERNETES_RESOURCES_DEFAULT_CPU
-          value: {{ .Values.resources.requests.CPU | quote }}
+          value: {{ .Values.executorResources.requests.CPU | quote }}
         - name: KUBERNETES_RESOURCES_DEFAULT_MEM
-          value: {{ .Values.resources.requests.MEM | quote }}
+          value: {{ .Values.executorResources.requests.MEM | quote }}
         {{ end -}}
-        {{ if .Values.resources.limits.enable }}
+        {{ if .Values.executorResources.limits.enable }}
         - name: KUBERNETES_RESOURCES_LIMITS_CPU
-          value: {{ .Values.resources.limits.CPU | quote }}
+          value: {{ .Values.executorResources.limits.CPU | quote }}
         - name: KUBERNETES_RESOURCES_LIMITS_MEMORY
-          value: {{ .Values.resources.limits.MEM | quote }}
+          value: {{ .Values.executorResources.limits.MEM | quote }}
         {{ end -}}
         {{ if .Values.ephemeralStorage.enable }}
         - name: KUBERNETES_LIMITS_EPHEMERAL_STORAGE
@@ -158,20 +158,20 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{ end -}}
         name: crane-container
-        {{ if or (.Values.craneResources.requests.enable) (.Values.craneResources.limits.enable) }} 
+        {{- if or (.Values.craneResources.requests.enable) (.Values.craneResources.limits.enable) }} 
         resources:
-          {{ if .Values.craneResources.requests.enable }} 
+          {{- if .Values.craneResources.requests.enable }} 
           requests:
-            memory: {{ .Values.craneResources.requests.memory }}
-            cpu: {{ .Values.craneResources.requests.cpu }}
-          {{ end -}}
-          {{ if .Values.craneResources.limits.enable }}
+            memory: {{ .Values.craneResources.requests.MEM }}
+            cpu: {{ .Values.craneResources.requests.CPU }}
+          {{- end -}}
+          {{- if .Values.craneResources.limits.enable }}
           limits:
-            memory: {{ .Values.craneResources.limits.memory }}
-            cpu: {{ .Values.craneResources.limits.cpu }}         
+            memory: {{ .Values.craneResources.limits.MEM }}
+            cpu: {{ .Values.craneResources.limits.CPU }}         
           {{ end -}}
-        {{ end -}}
-        {{ if .Values.non_privilege_container.enable }}  
+        {{- end -}}
+        {{- if .Values.non_privilege_container.enable }}  
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -179,8 +179,8 @@ spec:
             - ALL
           runAsGroup: {{ .Values.non_privilege_container.runAsGroup }} 
           runAsUser: {{ .Values.non_privilege_container.runAsUser }}        
-      {{ end }}
-        {{ if .Values.ca_bundle.enable }}
+      {{ end -}}
+        {{- if .Values.ca_bundle.enable }}
         volumeMounts:
         - name: {{ .Values.volume.volume_name }}
           mountPath: {{ .Values.volume.mount_path }}
@@ -188,7 +188,6 @@ spec:
       - name: {{ .Values.volume.volume_name }}
         configMap:
           name: {{ .Release.Name }}-configmap
-        {{ end }}   
-
+        {{ end -}}   
       restartPolicy: {{ .Values.restartPolicy }}
       terminationGracePeriodSeconds: 30

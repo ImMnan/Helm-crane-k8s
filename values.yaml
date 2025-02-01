@@ -7,7 +7,7 @@ deploymentRbac:
     # Specifies whether a ServiceAccount should be created, currently BM OPLs in Kubernetes only supports default service account.
     create: false
     # The name of the ServiceAccount to enable, keep empty to enable default account.
-    name: 
+    name: blazemeteragent
 
 env:
   authToken: 
@@ -68,7 +68,7 @@ volume:
 # This will run all pods/containers (related to private location installation) within the cluster as non_root. 
 # Non-root deployment requires qualifying plan and an additional feature to be enabled, please contact support for enabling this feature if your account has a qualifying plan. 
 non_privilege_container:
-  enable: yes
+  enable: no
   runAsGroup: 1337
   runAsUser: 1337
 
@@ -119,14 +119,13 @@ gridProxy:
 
 craneResources: 
   requests:           # The request resources are enabled by default for efficient agent functions. 
-    enable: yes 
+    enable: yes
     CPU: 512m
     MEM: 1024Mi 
   limits:
     enable: no
     CPU: 1
     MEM: 2Gi
-     
 
 # CPU limits & requests for resources created by agent.
 # Memory limits & requests for resources created by agent.
