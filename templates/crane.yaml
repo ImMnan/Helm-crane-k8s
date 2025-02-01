@@ -2,22 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    role: {{ .Values.matches.role }}
-  name: {{ .Values.deployment.name }}
+    role: {{ .Values.deploymentRbac.role }}
+  name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      role: {{ .Values.matches.role }}
-      crane: {{ .Values.matches.crane }}
+      role: {{ .Values.deploymentRbac.role }}
+      crane: ready
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        role: {{ .Values.matches.role }}
-        crane: {{ .Values.matches.crane }}
+        role: {{ .Values.deploymentRbac.role }}
+        crane: ready
     spec:
       serviceAccountName: {{ template "blazemeter-crane.serviceAccountName" . }}
       automountServiceAccountToken: true
@@ -50,9 +50,9 @@ spec:
         - name: IMAGE_OVERRIDES
           value: '{}'
         - name: DOCKER_REGISTRY
-          value: {{ .Values.env.docker_registry }}
+          value: {{ .Values.image.docker_registry | quote }}
         - name: AUTO_KUBERNETES_UPDATE
-          value: {{ .Values.env.auto_update | quote }}
+          value: {{ .Values.image.auto_update | quote }}
         {{ end }}          
         {{- if .Values.proxy.enable -}}
           {{ if .Values.proxy.http_proxy }}
@@ -151,14 +151,27 @@ spec:
           value: {{ .Values.gridProxy.tlsKeyGrid | quote }}
         {{ end -}}
         {{ if .Values.imageOverride.enable }} 
-        image: {{ .Values.imageOverride.image }}
+        image: {{ .Values.imageOverride.image }}:{{ .Values.imageOverride.tag }}
         imagePullPolicy: {{ .Values.imageOverride.pullPolicy }}
         {{ else }}
-        image: {{ .Values.env.image }}
-        imagePullPolicy: {{ .Values.env.pullPolicy }}
+        image: {{ .Values.image.image }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         {{ end -}}
         name: crane-container
-      {{- if .Values.non_privilege_container.enable }}
+        {{ if or (.Values.craneResources.requests.enable) (.Values.craneResources.limits.enable) }} 
+        resources:
+          {{ if .Values.craneResources.requests.enable }} 
+          requests:
+            memory: {{ .Values.craneResources.requests.memory }}
+            cpu: {{ .Values.craneResources.requests.cpu }}
+          {{ end -}}
+          {{ if .Values.craneResources.limits.enable }}
+          limits:
+            memory: {{ .Values.craneResources.limits.memory }}
+            cpu: {{ .Values.craneResources.limits.cpu }}         
+          {{ end -}}
+        {{ end -}}
+        {{ if .Values.non_privilege_container.enable }}  
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
