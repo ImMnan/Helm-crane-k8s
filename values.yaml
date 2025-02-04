@@ -57,14 +57,29 @@ proxy:
   no_proxy: "kubernetes.default,127.0.0.1,localhost,myHostname.com"
 
 # Configure CA Bundle here - Change enable: yes
+# Add these certifates to the chart main directory, for example: I have placed certificate.crt. 
 ca_bundle:
-  enable: yes
+  enable: no
   request_ca_bundle: "certificate.crt"
   aws_ca_bundle: "certificate2.crt"
-volume:
-  volume_name: "volume-cm"
-  mount_path: "/var/cm"
-  readOnly: true
+  volume:
+    volume_name: "volume-cm"
+    mount_path: "/var/cm"
+    readOnly: true
+
+#For functional test only. This uses the same environment variables as CA_Bundle configration.
+gridProxy:
+  enable: yes
+  a_environment: 'https://your.environment.net'
+  tlsKeyGrid: "certificate.key"          # The private key for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format. 
+  tlsCertGrid: "certificate.crt"         # The public certificate for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format.
+  mount_path: "/etc/ssl/certs/doduo"
+  doduoPort:  9070                       # The user-defined port where to run Doduo (BlazeMeter Grid Proxy). By default, Doduo listens on port 8000. 
+  volume:
+    volume_name: "tls-files"
+    mount_path: "/etc/ssl/certs/doduo"
+    readOnly: true
+    
 
 # If you plan to enable non-privileged containers, please enable the below configuration, change enable:yes
 # This will run all pods/containers (related to private location installation) within the cluster as non_root. 
@@ -110,13 +125,6 @@ nodeSelector:
   enable: no
   syntax:  {"label_1": "label_1_value", "label_2": "label_2_value"}
 
-
-#For functional test only. 
-gridProxy:
-  enable: no
-  doduoPort:  9070    # The user-defined port where to run Doduo (BlazeMeter Grid Proxy). By default, Doduo listens on port 8000. 
-  tlsCertGrid: wdfrg  # The public certificate for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format.
-  tlsKeyGrid: sefgwg  # The private key for the domain used to run the BlazeMeter Grid proxy over HTTPS. Value in string format. 
 
 # CPU & Memory limits & requests for resources for crane deployment. 
 craneResources: 
