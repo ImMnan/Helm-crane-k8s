@@ -213,6 +213,6 @@ spec:
       - name: {{ .Values.gridProxy.volume.volume_name }}
         configMap:
           name: {{ .Release.Name }}-configmap
-        {{ end -}}           
+        {{ end }}
       restartPolicy: {{ .Values.restartPolicy }}
       terminationGracePeriodSeconds: 30
