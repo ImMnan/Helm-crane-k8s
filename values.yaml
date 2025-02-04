@@ -1,5 +1,5 @@
 
-deploymentRbac:
+deployment:
 # This is the name of roles and clusterroles created by the chart.
   role: "roleCrane"
   clusterrole: "cluster-roleCrane"
@@ -8,6 +8,7 @@ deploymentRbac:
     create: false
     # The name of the ServiceAccount to enable, keep empty to enable default account.
     name:
+  restartPolicy: "Always"
 
 env: 
     # if you plan to pass the AUTH_TOKEN through secret in the crane ENV variables set secret to yes and add secret name and key
@@ -88,8 +89,6 @@ non_privilege_container:
   enable: no
   runAsGroup: 1337
   runAsUser: 1337
-
-restartPolicy: "Always"
 
 # enable Istio-Ingress if this Private location is going to run mock-services
 # Follow this guide till you have created a secret in istio-system namespace called wildcard-credential.

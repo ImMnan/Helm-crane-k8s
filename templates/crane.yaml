@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    role: {{ .Values.deploymentRbac.role }}
+    role: {{ .Values.deployment.role }}
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      role: {{ .Values.deploymentRbac.role }}
+      role: {{ .Values.deployment.role }}
       crane: ready
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        role: {{ .Values.deploymentRbac.role }}
+        role: {{ .Values.deployment.role }}
         crane: ready
     spec:
       serviceAccountName: {{ template "blazemeter-crane.serviceAccountName" . }}
@@ -214,5 +214,5 @@ spec:
         configMap:
           name: {{ .Release.Name }}-configmap
         {{ end }}
-      restartPolicy: {{ .Values.restartPolicy }}
+      restartPolicy: {{ .Values.deployment.restartPolicy }}
       terminationGracePeriodSeconds: 30
