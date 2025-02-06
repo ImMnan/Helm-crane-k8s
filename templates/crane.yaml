@@ -31,7 +31,7 @@ spec:
               key: {{ .Values.env.secret.secretKey }}
         {{ else }}
         - name: AUTH_TOKEN
-          value: {{ .Values.env.token }}
+          value: {{ .Values.env.authtoken }}
         {{ end -}}
         - name: HARBOR_ID
           value: {{ .Values.env.harbour_id }}
