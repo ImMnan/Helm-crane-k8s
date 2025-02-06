@@ -17,7 +17,7 @@ env:
     secretName: "your-secretName"
     secretKey: "auth-token"
   # if secret is not enabled, please enter the AUTH_TOKEN below directly. 
-  token:  "MY_SAMPLE_TOKEN-shfowh243owijoidh243o2nosIOIJONo2414"
+  authtoken:  "MY_SAMPLE_TOKEN-shfowh243owijoidh243o2nosIOIJONo2414"
   harbour_id: "MY_SAMPLE_HARBOURID"
   ship_id: "MY_SAMPLE_SHIPID"
   #Please use imageOverride if the use case is to utilise a custom image registry for the private location. 
