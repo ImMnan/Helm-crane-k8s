@@ -4,9 +4,9 @@
 {{- end }}
 
 {{- define "blazemeter-crane.serviceAccountName" -}}
-{{- if .Values.deploymentRbac.serviceAccount.create }}
-    {{- default (include "blazemeter-crane.fullname" .) .Values.deploymentRbac.serviceAccount.name -}}
+{{- if .Values.deployment.serviceAccount.create }}
+    {{- default (include "blazemeter-crane.fullname" .) .Values.deployment.serviceAccount.name -}}
 {{- else }}
-    {{- default "default" .Values.deploymentRbac.serviceAccount.name -}}
+    {{- default "default" .Values.deployment.serviceAccount.name -}}
 {{ end }}
 {{ end }}
