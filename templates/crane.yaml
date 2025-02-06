@@ -47,7 +47,7 @@ spec:
         - name: AUTO_KUBERNETES_UPDATE
           value: {{ .Values.imageOverride.auto_update | quote }}
         - name: AUTO_UPDATE_CONTAINERS_WHILE_RUNNING
-          value: {{ .Values.imageOverride.auto_update_containers_while_running | quote }}
+          value: {{ .Values.imageOverride.auto_update_running_containers | quote }}
         {{ else }}    
         - name: IMAGE_OVERRIDES
           value: '{}'
@@ -56,7 +56,7 @@ spec:
         - name: AUTO_KUBERNETES_UPDATE
           value: {{ .Values.image.auto_update | quote }}
         - name: AUTO_UPDATE_CONTAINERS_WHILE_RUNNING
-          value: {{ .Values.image.auto_update_containers_while_running | quote }}
+          value: {{ .Values.image.auto_update_running_containers | quote }}
         {{ end -}}          
         {{ if .Values.proxy.enable -}}
           {{ if .Values.proxy.http_proxy }}
@@ -97,8 +97,6 @@ spec:
           value: {{ .Values.istio_ingress.credentialName | quote }}
         - name: KUBERNETES_SERVICE_USE_TYPE
           value: CLUSTERIP
-        - name: KUBERNETES_USE_PRE_PULLING
-          value: {{ .Values.istio_ingress.pre_pulling | quote }}
         - name: KUBERNETES_SERVICES_BLOCKING_GET
           value: "true"
         - name: KUBERNETES_ISTIO_GATEWAY_NAME
