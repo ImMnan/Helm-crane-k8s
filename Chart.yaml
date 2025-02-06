@@ -22,6 +22,8 @@ keywords:
   - TLS Grid
   - Grid Proxy
   - Ephemeral Storage
+  - ImageOverride
+  - Private repository
   
 type: application
 icon: https://github.com/Blazemeter/helm-crane/raw/main/Image.png
