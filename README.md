@@ -70,34 +70,38 @@ tar -xvf helm-crane(version).tgz
 - Open the `values` file to make amendments as per requirements. 
 
 #### [4.1] Adding the basic/required configurations
-- Add the Harbour_ID, Ship_ID and Auth_token in the `values.yaml` file.  `Harbour_ID`, `Ship_ID` and `authtoken` is the one we aquired before see[2.1]. 
+- Add the Harbour_ID, Ship_ID and Auth_token in the `values.yaml` file.  `harbour_id`, `ship_id` and `authtoken` are the one we aquired earlier see: [2.0](#20-generating-harbour_id-ship_id-and-auth_token-in-blazemeter)
 
 ```yaml
 env: 
-  secret:
+  # if you plan to pass the AUTH_TOKEN through secret in the crane ENV variables set secret to yes and add secret name and key
+  secret_authtoken:
     enable: no
     secretName: "your-secretName"
-    secretKey: "auth-token"
+    secretKey: "authtoken"
   authtoken:  "MY_SAMPLE_TOKEN-shfowh243owijoidh243o2nosIOIJONo2414"
   harbour_id: "MY_SAMPLE_HARBOURID"
   ship_id: "MY_SAMPLE_SHIPID"
 ```
 
-- If user/admins require the AUTH_TOKEN for any crane installation to be secret/secure, the ENV values for AUTH_TOKEN can be inherited from the k8s secret. The user needs to make changes to this part of the `values` file. In that case, the `authtoken` value will be ignored. Make sure the cluster/namespace has the secret applied in the following format:
+- If user/admins require the AUTH_TOKEN for any crane installation to be secret/secure, the ENV values for AUTH_TOKEN can be inherited from the k8s secret. The user needs to make changes to `secret_authtoken` part of the `values` file. In that case, the `authtoken` value will be ignored. Make sure the cluster/namespace has the secret applied in the following format:
+
 ```YAML
 apiVersion: v1
 kind: Secret
 metadata:
-  name: your-secretName
+  name: <your-secretName>
   namespace: blazemeter
 type: Opaque
 data:
-  auth-token: ZjIzZjU0ZTIwODk5ZWYwYzgzYmJkMzZmYzU3ODlhNzc3ODJjYTY1YjJjODIzZTMyMjY3NDcxM2QzZTc3Mzg2Yw==
+  authtoken: ZjIzZjU0ZTIwODk5ZWYwYzgzYmJkMzZmYzU3ODlhNzc3ODJjYTY1YjJjODIzZTMyMjY3NDcxM2QzZTc3Mzg2Yw==
+```
+
 
 #### [4.2] Configuring the default image settings
-- User can configure the settings for image pull-policy, auto-update, etc. If the `auto-update` is not a desired option, it can be set to `false`, which will disable the auto-update for crane and its components. Similarly, the `pull` policy can be changed to `Always` or `IfNotPresent` as per the requirement. If the cluster cache is configured to preserve the images for longer duration, changing the setting is desirable. 
+- User can configure the settings for image pull-policy, auto-update, etc. in the `image` values. If the `auto-update` is not a desired option, it can be set to `false`, which will disable the auto-update for crane and its components. Similarly, the `pull` policy can be changed to `Always` or `IfNotPresent` as per the requirement. If the cluster cache is configured to preserve the images for longer duration, changing the pull policy is desirable. 
 
-*Note: Do not change the registry, image or tag values here, use the `imageOverride` section to override the default settings.*
+*Note: Do not change the default Blazemeter registry, image or tag values here, use the `imageOverride` section to override the default settings.*
 
 ```yaml
 image:   
@@ -111,7 +115,7 @@ image:
 
 #### [4.3] Configuring the image override settings
 
-- User can override the default image settings by adding the `imageOverride` section in the `values.yaml` file by switching the `enable` to `yes`. Replace the `docker_registry` and `image` values with the custom registry and image path. Similarly, replace the `pathToYourRepo` with the custom image path and available version tag in your private registry. Please refer the commented example in the below snippet. 
+- User can override the default image settings by adding the `imageOverride` section in the `values.yaml` file by switching the `enable` to `yes`. Replace the `docker_registry` and `image` values with the custom registry and image path. Similarly, replace the path:`pathToYourRepo` with the custom image path and available version tag in your private repository. Please refer the commented example in the below snippet. Similary, if the `auto-update` is not a desired option, it can be set to `false`, which will disable the auto-update for crane and its components. Similarly, the `pull` policy can be changed to `Always` or `IfNotPresent` as per the requirement.
 
 ```yaml
 imageOverride:
@@ -141,7 +145,8 @@ proxy:
 ```
 
 #### [4.5] Adding CA certificates
-- Now, if you want to configure your Kubernetes installation to use [CA certificates](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-kubernetes-agent-to-use-ca-bundle.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____12), make changes to this section of the values.yaml file:
+
+- If user plan to configure the Kubernetes installation to use [CA certificates](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-kubernetes-agent-to-use-ca-bundle.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____12), make changes to the following section of the values.yaml file:
   -  Change the `enable` to `yes`
   -  Provide the path to the certificate file respectively for both (ca_subpath & aws_subpath). The best thing is to just copy/move these cert files in the same directory as this chart and just provide the name of the certs instead of the complete path.
 
@@ -155,8 +160,11 @@ volume:
   mount_path: "/var/cm"
 ```
 
+*This uses the same environment variables as CA_Bundle configration, therefore, either one can be used per deployment*
+
 #### [4.6] Adding gridProxy configuration
-- If you want to configure your crane installation to use [gridProxy](https://help.blazemeter.com/docs/guide/functional-run-gridproxy-over-https.htm?Highlight=grid%20proxy), make changes to this section of the `values.yaml` file. Grid Proxy enables you to run Selenium functional tests in BlazeMeter without using a local server. You can run Grid Proxy over the HTTPS protocol using either of the following methods:
+
+- If you plan to configure your crane installation to use [gridProxy](https://help.blazemeter.com/docs/guide/functional-run-gridproxy-over-https.htm?Highlight=grid%20proxy), make changes to the following section of the `values.yaml` file. Grid Proxy enables you to run Selenium functional tests in BlazeMeter without using a local server. You can run Grid Proxy over the HTTPS protocol using the following methods:
 
 ```yaml
 gridProxy:
@@ -175,18 +183,23 @@ gridProxy:
 
 *For functional test only. This uses the same environment variables as CA_Bundle configration, therefore, either one can be used per deployment*
 
-#### [4.5] Deploying Non_provoledge container - NON_ROOT deployment. 
-- If you plan to deploy the Blazemeter crane as a non_Priviledged installation, make changes to this part of the `values` file. Non-root deployment requires an additional feature to be enabled at account level, please contact support for enabling this feature.
+
+#### [4.5] Deploying Non_priviledge container - NON_ROOT deployment. 
+- If you plan to deploy the Blazemeter crane as a non_Priviledged installation, make changes to the following part of the `values` file. Change the `enable` to `yes` and this will automatically run the deployment and consecutive pods as Non_root/Non_priviledge. You can ammend the runAsGroup and runAsUser to any value of your choice. 
+
 ```YAML
 non_privilege_container:
   enable: no
   runAsGroup: 1337
   runAsUser: 1337
 ```
-Change the `enable` to `yes` and this will automatically run the deployment and consecutive pods as Non_root/Non_priviledge.
+
+*Non-root deployment requires an additional feature to be enabled at account level, please contact support for enabling this feature.*
+
 
 #### [4.6] Installing Istio based crane for mock service deployment within the k8s cluster
-- If this OPL/Private location is going to run mock services using istio-ingress, make changes to this part of the `values` file.Change `enable` to `yes` and this will automatically setup istio-ingress for this installation. Which will allow outside traffic to access the mock-service pod. However, make sure istio is already installed and configured as per the [Blazemeter guide](https://help.blazemeter.com/docs/guide/private-locations-install-blazemeter-agent-for-kubernetes-for-mock-services.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____6) 
+- If this OPL/Private location is going to run mock services using istio-ingress, make changes to the following part of the `values` file. Change `enable` to `yes` and this will automatically setup istio-ingress for this crane deployment. This will allow outside traffic to access the service-virtualisation pod. However, make sure istio is already installed and configured as per the [Blazemeter guide](https://help.blazemeter.com/docs/guide/private-locations-install-blazemeter-agent-for-kubernetes-for-mock-services.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____6) 
+
 ```yaml
 istio_ingress: 
   enable: no
@@ -199,7 +212,7 @@ istio_ingress:
 
 
 #### [4.7] Installing Nginx Ingress-based crane for mock service deployment 
-- If this OPL/Private location is going to run mock services using nginx-ingress, make changes to this part of the `values` file. Change the `enable` to `yes` and this will automatically set up nginx-ingress for this installation, which will allow outside traffic to access the mock-service pod. However, make sure nginx is already installed and configured. [Blazemeter guide](https://help.blazemeter.com/docs/guide/private-locations-install-blazemeter-agent-for-kubernetes-for-mock-services.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____6)
+- If this OPL/Private location is going to run mock services using nginx-ingress, make changes to following part of the `values` file. Change the `enable` to `yes` and this will automatically set up nginx-ingress for this installation, which will allow outside traffic to access the mock-service pod. However, make sure nginx is already installed and configured. [Blazemeter guide](https://help.blazemeter.com/docs/guide/private-locations-install-blazemeter-agent-for-kubernetes-for-mock-services.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____6)
 
 ```yaml
 nginx_ingress:
@@ -212,6 +225,7 @@ nginx_ingress:
 
 
 #### [4.9] Configure deployment to support child pods to inherit labels from the crane
+
 - If users/admins require a certain set of labels as part of the deployment of a cluster resource, we can use these `labels` values. These labels will be Inherited from the crane when the child pods are deployed. Because, note that labels added to crane deployment will not be automatically inherited by the child pods. Switch the `enable` to `yes` and add labels in a JSON format as per the example:
 ```yaml
 labels:
@@ -220,6 +234,7 @@ labels:
 ```
 
 #### [4.12] Configure deployment to support node selectors and tolerations 
+
 - The configuration is used to specify the tolerations & nodeselector labels. The crane container will pass these tolerations and node selector elements to child containers when they are deployed. Switch the `enable` to `yes` and add tolerations & nodeselector labels in a Json format as per the example:
 ```yaml
 toleration: 
@@ -233,6 +248,7 @@ nodeSelector:
 
 
 #### [4.10] Configure resources limits and requests for the crane & child resources.
+
 - If user/admins require a CPU, or MEM limit or requests to be applied to crane and its child resources, we can use this `craneResources` or `executorResources` value. These values will be applied to crane resource section, as well as will be Inherited by the child pods. You can either use one of them or both. Switch the `enable` to `yes` and add resource limits/requests in a string format as per the example:
 
 ```yaml
@@ -261,6 +277,7 @@ executorResources:
 
 
 #### [4.11] Configure deployment to implement ephemeral storage request/limit for the child pods
+
 - If the admin require to setup an ephemeral storage request/limit for the child pods, we can use this `ephemeralStorage` value. The values are in Mi. Switch the `enable` to `yes` and add the values in a string format as per the example:
 ```yaml
 ephemeralStorage:
@@ -269,7 +286,9 @@ ephemeralStorage:
   requests: 100       # Default: 100 (Mi). 
 ```
 
+
 #### [5.0] Verify if everything is setup correctly
+
 - Once the values are updated, please verify if the values are correctly used in the helm chart:
 
 ```
