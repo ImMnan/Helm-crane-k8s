@@ -1,19 +1,19 @@
 # Helm for Blazemeter Private Location
 
-[Download the latest Chart](https://github.com/Blazemeter/helm-crane/releases/download/1.2.2/helm-crane-1.2.2.tgz)
+[Download the latest Chart](https://github.com/Blazemeter/helm-crane/releases)
 
 Deploy Blazemeter private location engine to your Kubernetes cluster using HELM chart. Plus the chart allows to make advanced configurations if required. 
 
 ![Helm-crane](/Image.png)
 
-### [1.0] Requirements
+## [1.0] Requirements
 1. A [BlazeMeter account](https://a.blazemeter.com/)
 2. A Kubernetes cluster
 3. Latest [Helm installed](https://helm.sh/docs/helm/helm_version/)
 4. The kubernetes cluster needs to fulfill [Blazemeter Private location requirements](https://help.blazemeter.com/docs/guide/private-locations-system-requirements.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____1)
 
 
-### [2.0] Generating Harbour_ID, Ship_ID and Auth_token in Blazemeter
+## [2.0] Generating Harbour_ID, Ship_ID and Auth_token in Blazemeter
 
 >To start with, you will need Harbour_ID, Ship_ID & Auth_token from Blazemeter. You can either generate these from Blazemeter GUI or through API as described below.
 
@@ -34,11 +34,9 @@ Deploy Blazemeter private location engine to your Kubernetes cluster using HELM 
 
 ---
 
-### [3.0] Downloading the chart
+## [3.0] Downloading the chart
 
-- Pull/Download the chart - tar file from the GitHub repository 
-
-  [Download the latest Chart](https://github.com/Blazemeter/helm-crane/releases/download/1.2.2/helm-crane-1.2.2.tgz)
+- Pull/Download the chart - tar file from the GitHub repository [Download the latest Chart](https://github.com/Blazemeter/helm-crane/releases)
 
 - Untar the chart
 ```bash
@@ -65,7 +63,7 @@ tar -xvf helm-crane(version).tgz
 <!This above command will by-default pull the latest version of the chart, i.e. 0.1.2 which allows configuring CA_bundle. However, if you are interested in other version please use the flag `--version=` in the pull command. >
 
 ---
-### [4.0] Configuring the Chart values before installing
+## [4.0] Configuring the Chart values before installing
 
 - Open the `values` file to apply configurations as per your deployment requirements. 
 
@@ -152,16 +150,17 @@ proxy:
 
 - If you plan to configure the Kubernetes installation to use [CA certificates](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-kubernetes-agent-to-use-ca-bundle.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____12), make changes to the following section of the values.yaml file:
   -  Change the `enable` to `yes`
-  -  Provide the path to the certificate file respectively for both (ca_subpath & aws_subpath). The best thing is to just copy/move these cert files in the same directory as this chart and just provide the name of the certs instead of the complete path.
+  -  Provide the path to the certificate file respectively for both (ca_subpath & aws_subpath). You will need to copy/move these cert files in the same directory as this chart and just provide the name of the certs instead of the complete path. '
 
 ```yaml
 ca_bundle:
   enable: no
-  ca_subpath: "certificate.crt"
-  aws_subpath: "certificate2.crt"
-volume:
-  volume_name: "volume-cm"
-  mount_path: "/var/cm"
+  request_ca_bundle: "certificate.crt"
+  aws_ca_bundle: "certificate2.crt"
+  volume:
+    volume_name: "volume-cm"
+    mount_path: "/var/cm"
+    readOnly: true
 ```
 
 *This uses the same environment variables as CA_Bundle configration, therefore, either one can be used per deployment*
@@ -291,7 +290,7 @@ ephemeralStorage:
 ```
 
 
-#### [5.0] Verify if everything is setup correctly
+## [5.0] Verify if everything is setup correctly
 
 - Once the values are updated, please verify if the values are correctly used in the helm chart:
 
@@ -302,7 +301,7 @@ helm template <path-to-chart>
 
 This will print the template Helm will use to install this chart. Check the values and if something is missing, please make ammends.
 
-### [6.0] Installing the chart
+## [6.0] Installing the chart
 
 - Install the helm chart
 ```
@@ -311,7 +310,7 @@ helm install crane /path/to/chart --namespace <namespace>
 **Here, crane is the name we are setting for the chart on our system. Make sure the namespace is declared here.**
 
 
-### [7.0] Varify the chart installation
+## [7.0] Varify the chart installation
 
 - To varify the installation of our Helm chart run:
 ```
