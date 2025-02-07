@@ -23,12 +23,12 @@ spec:
       automountServiceAccountToken: true
       containers:
       - env:
-        {{ if .Values.env.secret.enable }}
+        {{ if .Values.env.secret_authtoken.enable }}
         - name: AUTH_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{.Values.env.secret.secretName }}
-              key: {{ .Values.env.secret.secretKey }}
+              name: {{.Values.env.secret_authtoken.secretName }}
+              key: {{ .Values.env.secret_authtoken.secretKey }}
         {{ else }}
         - name: AUTH_TOKEN
           value: {{ .Values.env.authtoken }}

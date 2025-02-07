@@ -12,7 +12,7 @@ deployment:
 
 env: 
     # if you plan to pass the AUTH_TOKEN through secret in the crane ENV variables set secret to yes and add secret name and key
-  secret:
+  secret_authtoken:
     enable: no
     secretName: "your-secretName"
     secretKey: "auth-token"
@@ -20,7 +20,6 @@ env:
   authtoken:  "MY_SAMPLE_TOKEN-shfowh243owijoidh243o2nosIOIJONo2414"
   harbour_id: "MY_SAMPLE_HARBOURID"
   ship_id: "MY_SAMPLE_SHIPID"
-  #Please use imageOverride if the use case is to utilise a custom image registry for the private location. 
 
 image:   
   docker_registry: "gcr.io/verdant-bulwark-278"  #default registry for Blazemeter crane (DO NOT CHANGE)
