@@ -101,8 +101,6 @@ data:
 #### [4.2] Configuring the default image settings
 - User can configure the settings for image pull-policy, auto-update, etc. in the `image` values. If the `auto-update` is not a desired option, it can be set to `false`, which will disable the auto-update for crane and its components. Similarly, the `pull` policy can be changed to `Always` or `IfNotPresent` as per the requirement. If the cluster cache is configured to preserve the images for longer duration, changing the pull policy is desirable. 
 
-*Note: Do not change the default Blazemeter registry, image or tag values here, use the `imageOverride` section to override the default settings.*
-
 ```yaml
 image:   
   docker_registry: "gcr.io/verdant-bulwark-278"  #default registry for Blazemeter crane (DO NOT CHANGE)
@@ -113,9 +111,14 @@ image:
   pullPolicy: "Always"
 ```
 
+*Note: Do not change the default Blazemeter registry, image or tag values here, use the `imageOverride` section to override the default settings.*
+
+
 #### [4.3] Configuring the image override settings
 
-- User can override the default image settings by adding the `imageOverride` section in the `values.yaml` file by switching the `enable` to `yes`. Replace the `docker_registry` and `image` values with the custom registry and image path. Similarly, replace the path:`pathToYourRepo` with the custom image path and available version tag in your private repository. Please refer the commented example in the below snippet. Similary, if the `auto-update` is not a desired option, it can be set to `false`, which will disable the auto-update for crane and its components. Similarly, the `pull` policy can be changed to `Always` or `IfNotPresent` as per the requirement.
+- User can override the default image settings by adding the `imageOverride` section in the `values.yaml` file by switching the `enable` to `yes`. Replace the `docker_registry` and `image` values with the custom registry and image path.
+
+- Similarly, replace the path:`pathToYourRepo` with the custom image path and available version tag in your private repository. Please refer the commented example in the below snippet. Similary, if the `auto-update` is not a desired option, it can be set to `false`, which will disable the auto-update for crane and its components. Similarly, the `pull` policy can be changed to `Always` or `IfNotPresent` as per the requirement.
 
 ```yaml
 imageOverride:
@@ -133,7 +136,7 @@ imageOverride:
 
 
 #### [4.4] Adding Proxy config details
-- If the [proxy](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-agents-to-use-corporate-proxy.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____10#h_4a05699b-fb2d-4d9b-933d-11b5e3befaca) needs to be configured, change the value for `enable` to `yes`. Now, add the configuration for `http_proxy` or/and `https_proxy`. Make sure the values are set to `yes` before adding the proxy `path`, as shown below:
+- If the [proxy](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-agents-to-use-corporate-proxy.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____10#h_4a05699b-fb2d-4d9b-933d-11b5e3befaca) needs to be configured, change the value for `enable` to `yes`. Add the configuration for `http_proxy` or/and `https_proxy`. Make sure the values are set to `yes` before adding the proxy `path`, as shown below:
 
 ```yaml
 proxy:
@@ -154,7 +157,7 @@ proxy:
 ca_bundle:
   enable: no
   ca_subpath: "certificate.crt"
-  aws_subpath: "certificate.crt"
+  aws_subpath: "certificate2.crt"
 volume:
   volume_name: "volume-cm"
   mount_path: "/var/cm"
