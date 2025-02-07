@@ -7,7 +7,7 @@ Deploy Blazemeter private location engine to your Kubernetes cluster using HELM 
 ![Helm-crane](/Image.png)
 
 ### [1.0] Requirements
-1. A [BlazeMeter account](https://www.blazemeter.com/)
+1. A [BlazeMeter account](https://a.blazemeter.com/)
 2. A Kubernetes cluster
 3. Latest [Helm installed](https://helm.sh/docs/helm/helm_version/)
 4. The kubernetes cluster needs to fulfill [Blazemeter Private location requirements](https://help.blazemeter.com/docs/guide/private-locations-system-requirements.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____1)
@@ -15,7 +15,7 @@ Deploy Blazemeter private location engine to your Kubernetes cluster using HELM 
 
 ### [2.0] Generating Harbour_ID, Ship_ID and Auth_token in Blazemeter
 
->To start with, Blazemeter user will need Harbour_ID, Ship_ID & Auth_token from Blazemeter. You can either generate these from Blazemeter GUI or through API as described below.
+>To start with, you will need Harbour_ID, Ship_ID & Auth_token from Blazemeter. You can either generate these from Blazemeter GUI or through API as described below.
 
 1. Get the Harbour_ID, Ship_ID and Auth_token through BlazeMeter GUI
     - Login to Blazemeter & create a [Private Location](https://help.blazemeter.com/docs/guide/private-locations-create.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____2)
@@ -67,7 +67,7 @@ tar -xvf helm-crane(version).tgz
 ---
 ### [4.0] Configuring the Chart values before installing
 
-- Open the `values` file to make amendments as per requirements. 
+- Open the `values` file to apply configurations as per your deployment requirements. 
 
 #### [4.1] Adding the basic/required configurations
 - Add the Harbour_ID, Ship_ID and Auth_token in the `values.yaml` file.  `harbour_id`, `ship_id` and `authtoken` are the one we aquired earlier see: [2.0](#20-generating-harbour_id-ship_id-and-auth_token-in-blazemeter)
@@ -84,7 +84,7 @@ env:
   ship_id: "MY_SAMPLE_SHIPID"
 ```
 
-- If user/admins require the AUTH_TOKEN for any crane installation to be secret/secure, the ENV values for AUTH_TOKEN can be inherited from the k8s secret. The user needs to make changes to `secret_authtoken` part of the `values` file. In that case, the `authtoken` value will be ignored. Make sure the cluster/namespace has the secret applied in the following format:
+- If you require the AUTH_TOKEN for any crane installation to be secret/secure, the ENV values for AUTH_TOKEN can be inherited from the k8s secret. You will need to make changes to `secret_authtoken` part of the `values` file. In that case, the `authtoken` value will be ignored. Make sure the cluster/namespace has the secret applied in the following format:
 
 ```YAML
 apiVersion: v1
@@ -99,7 +99,8 @@ data:
 
 
 #### [4.2] Configuring the default image settings
-- User can configure the settings for image pull-policy, auto-update, etc. in the `image` values. If the `auto-update` is not a desired option, it can be set to `false`, which will disable the auto-update for crane and its components. Similarly, the `pull` policy can be changed to `Always` or `IfNotPresent` as per the requirement. If the cluster cache is configured to preserve the images for longer duration, changing the pull policy is desirable. 
+
+- You can configure the settings for image pull-policy, auto-update, etc. in the `image` values. If the `auto-update` is not a desired option, it can be set to `false`, which will disable the auto-update for crane and its components. Similarly, the `pull` policy can be changed to `Always` or `IfNotPresent` as per the requirement. If the cluster cache is configured to preserve the images for longer duration, changing the pull policy is desirable. 
 
 ```yaml
 image:   
@@ -116,7 +117,7 @@ image:
 
 #### [4.3] Configuring the image override settings
 
-- User can override the default image settings by adding the `imageOverride` section in the `values.yaml` file by switching the `enable` to `yes`. Replace the `docker_registry` and `image` values with the custom registry and image path.
+- You can override the default image settings by adding the `imageOverride` section in the `values.yaml` file by switching the `enable` to `yes`. Replace the `docker_registry` and `image` values with the custom registry and image path.
 
 - Similarly, replace the path:`pathToYourRepo` with the custom image path and available version tag in your private repository. Please refer the commented example in the below snippet. Similary, if the `auto-update` is not a desired option, it can be set to `false`, which will disable the auto-update for crane and its components. Similarly, the `pull` policy can be changed to `Always` or `IfNotPresent` as per the requirement.
 
@@ -149,7 +150,7 @@ proxy:
 
 #### [4.5] Adding CA certificates
 
-- If user plan to configure the Kubernetes installation to use [CA certificates](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-kubernetes-agent-to-use-ca-bundle.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____12), make changes to the following section of the values.yaml file:
+- If you plan to configure the Kubernetes installation to use [CA certificates](https://help.blazemeter.com/docs/guide/private-locations-optional-installation-step-configure-kubernetes-agent-to-use-ca-bundle.html?tocpath=Private%20Locations%7CInstallation%20of%20Private%20Locations%7C_____12), make changes to the following section of the values.yaml file:
   -  Change the `enable` to `yes`
   -  Provide the path to the certificate file respectively for both (ca_subpath & aws_subpath). The best thing is to just copy/move these cert files in the same directory as this chart and just provide the name of the certs instead of the complete path.
 
@@ -229,7 +230,7 @@ nginx_ingress:
 
 #### [4.9] Configure deployment to support child pods to inherit labels from the crane
 
-- If users/admins require a certain set of labels as part of the deployment of a cluster resource, we can use these `labels` values. These labels will be Inherited from the crane when the child pods are deployed. Because, note that labels added to crane deployment will not be automatically inherited by the child pods. Switch the `enable` to `yes` and add labels in a JSON format as per the example:
+- If you require a certain set of labels as part of the deployment of a cluster resource, we can use these `labels` values. These labels will be Inherited from the crane when the child pods are deployed. Because, note that labels added to crane deployment will not be automatically inherited by the child pods. Switch the `enable` to `yes` and add labels in a JSON format as per the example:
 ```yaml
 labels:
   enable: yes 
@@ -252,7 +253,7 @@ nodeSelector:
 
 #### [4.10] Configure resources limits and requests for the crane & child resources.
 
-- If user/admins require a CPU, or MEM limit or requests to be applied to crane and its child resources, we can use this `craneResources` or `executorResources` value. These values will be applied to crane resource section, as well as will be Inherited by the child pods. You can either use one of them or both. Switch the `enable` to `yes` and add resource limits/requests in a string format as per the example:
+- If you require a CPU, or MEM limit or requests to be applied to crane and its child resources, we can use this `craneResources` or `executorResources` value. These values will be applied to crane resource section, as well as will be Inherited by the child pods. You can either use one of them or both. Switch the `enable` to `yes` and add resource limits/requests in a string format as per the example:
 
 ```yaml
 # CPU & Memory limits & requests for resources for crane deployment. 
@@ -281,7 +282,7 @@ executorResources:
 
 #### [4.11] Configure deployment to implement ephemeral storage request/limit for the child pods
 
-- If the admin require to setup an ephemeral storage request/limit for the child pods, we can use this `ephemeralStorage` value. The values are in Mi. Switch the `enable` to `yes` and add the values in a string format as per the example:
+- If you need to setup an ephemeral storage request/limit for the child pods, we can use this `ephemeralStorage` value. The values are in Mi. Switch the `enable` to `yes` and add the values in a string format as per the example:
 ```yaml
 ephemeralStorage:
   enable: no
@@ -328,6 +329,7 @@ Therefore, ***always go with Node autoscaling***
 
 ## [9.0] Changelog:
 
+- 1.3.0 - Chart can support image-override configuration. gridProxy is in working configuration. Resource limit/requests are now configurable for crane and child resources. Simplified nesting and values configuration. Chart can now work with non-default serviceAccount. Minor fixes. 
 - 1.2.3 - Chart can work with resource requests & limits, similarly the ephemeral storage requests & limits can be configured.
 - 1.2.2 - Chart now supports gridProxy deployment configurations
 - 1.2.1 - Chart now supports node selectors and tolerations
